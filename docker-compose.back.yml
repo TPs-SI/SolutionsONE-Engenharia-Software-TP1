@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: ${IMAGEM_BD}
+    container_name: ${NOME_CONTAINER_BD}
+    ports:
+      - "${PORTA_BD_HOST}:${PORTA_BD_CONTAINER}"
+    volumes:
+      - ${NOME_VOLUME_BD}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+volumes:
+  my_db:
