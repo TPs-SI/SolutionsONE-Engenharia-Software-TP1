@@ -11,8 +11,6 @@ Solutions ONE é um sistema completo de **gerenciamento de projetos, equipes e c
 - **Registrar e monitorar a jornada de trabalho** com um sistema de ponto integrado.
 - **Manter os usuários informados** com notificações e alertas relevantes sobre projetos e atividades.
 
-## Histórias de usuário
-
 # 📌 Histórias de Usuário
 
 ## 🏷 CRUD Usuários
