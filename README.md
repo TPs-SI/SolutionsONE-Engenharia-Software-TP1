@@ -127,13 +127,13 @@ Como **Usuário**, quero integrar o sistema ao meu calendário pessoal para gere
 ### ✅ Critérios de Aceitação
 - O usuário pode sincronizar o sistema com seu calendário pessoal.
 
-## 👥 Membros e papeis
+# 👥 Membros e papeis
 - **Allan:** Fullstack
 - **Bernardo:** Fullstack
 - **Bruno:** Fullstack
 - **Eduardo:** Fullstack
 
-## 🛠️ Tecnologias Utilizadas
+# 🛠️ Tecnologias Utilizadas
 - **Linguagem:** Typescript
 - **Frontend:** React
 - **Backend:** Node.js
