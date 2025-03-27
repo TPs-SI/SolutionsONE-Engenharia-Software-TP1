@@ -45,6 +45,15 @@ describe("UserService", () => {
 		jest.clearAllMocks();
 	});
 
+	describe("encryptPassword", () => {
+		it("deve retornar uma senha criptografada diferente da senha original", async () => {
+			const password = "senhaSecreta";
+			const encrypted = await UserService.encryptPassword(password);
+			expect(encrypted).not.toEqual(password);
+			expect(typeof encrypted).toBe("string");
+		});
+	});
+
 
 
 });
