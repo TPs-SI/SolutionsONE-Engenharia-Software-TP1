@@ -66,5 +66,16 @@ function resetPasswordValidation(optional = false): ValidationChain {
     );
 }
 
-
+// Validação de telefone
+function cellphoneValidation(optional = true): ValidationChain {
+  let validator = body("cellphone");
+  if (optional) {
+    validator = validator.optional({ checkFalsy: true });
+  }
+  return validator
+    .notEmpty()
+    .withMessage("Insira seu telefone!")
+    .matches(phoneRegex)
+    .withMessage("Número de telefone deve estar no formato XX (XX) YYYYYY-YYYY.");
+}
 
