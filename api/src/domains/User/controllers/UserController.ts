@@ -77,4 +77,25 @@ userRouter.put("/account/updatephoto", async (req: Request, res: Response, next:
 	}
 });
 
+  /*
+   * ===== Rotas Administrativas =====
+   */
+  
+  // Retorna a lista de usuários de acordo com o cargo do solicitante
+  userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const usersList = await UserService.readAllUsers(req.user.id);
+		if (usersList) {
+			res.status(statusCodes.SUCCESS).json(usersList);
+		} else {
+			res.status(statusCodes.NOT_FOUND).json({ error: "Nenhum usuário ativo." });
+		}
+	} catch (error) {
+		const typedError = error as Error;
+		res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
+		next(error);
+	}
+});
+
+
 export default userRouter;
