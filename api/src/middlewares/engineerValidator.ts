@@ -79,3 +79,15 @@ function cellphoneValidation(optional = true): ValidationChain {
     .withMessage("Número de telefone deve estar no formato XX (XX) YYYYYY-YYYY.");
 }
 
+// Validação de data de nascimento
+function birthValidation(optional = true): ValidationChain {
+  let validator = body("birth");
+  if (optional) {
+    validator = validator.optional({ checkFalsy: true });
+  }
+  return validator
+    .notEmpty()
+    .withMessage("Insira sua data de nascimento")
+    .matches(dateRegex)
+    .withMessage("Data de nascimento deve estar no formato DD/MM/YYYY");
+}
