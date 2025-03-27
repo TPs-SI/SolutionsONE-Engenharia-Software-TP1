@@ -476,5 +476,32 @@ describe("UserService", () => {
 		});
 	});
 
+	describe("deleteUser", () => {
+		const user = {
+			id: 1,
+			email: "teste@teste.com",
+			name: "Usuário Teste",
+			password: "hashed",
+			photo: null,
+			key: " ",
+			cellphone: "1111111111",
+			birth: "1990-01-01",
+			status: "Active",
+			role: "Member",
+			resetToken: null,
+			tokenExpires: null,
+		};
 
+		it("deve lançar InvalidParamError se o usuário não for encontrado", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(null);
+			await expect(UserService.deleteUser(1)).rejects.toThrow(InvalidParamError);
+		});
+
+		it("deve deletar o usuário e retornar o usuário original", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(user);
+			prismaMock.user.delete.mockResolvedValueOnce(user);
+			const result = await UserService.deleteUser(1);
+			expect(result).toEqual(user);
+		});
+	});
 });
