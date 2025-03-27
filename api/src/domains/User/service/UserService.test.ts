@@ -444,6 +444,37 @@ describe("UserService", () => {
 		});
 	});
 
+	describe("updatePhotoAccount", () => {
+		const user = {
+			id: 1,
+			photo: "fotoAntiga",
+			key: "chaveAntiga",
+			email: "teste@teste.com",
+			name: "Usuário Teste",
+			password: "hashed",
+			cellphone: "1111111111",
+			birth: "1990-01-01",
+			status: "Active",
+			role: "Member",
+			resetToken: null,
+			tokenExpires: null,
+		};
+
+		it("deve lançar erro se o usuário não for encontrado", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(null);
+			await expect(
+				UserService.updatePhotoAccount(1, { key: "novaChave", location: "novaFoto" })
+			).rejects.toThrow("Esse usuário não existe");
+		});
+
+		it("deve atualizar a foto e retornar o usuário atualizado", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(user);
+			const updatedUserMock = { ...user, photo: "novaFoto", key: "novaChave" };
+			prismaMock.user.update.mockResolvedValueOnce(updatedUserMock);
+			const result = await UserService.updatePhotoAccount(1, { key: "novaChave", location: "novaFoto" });
+			expect(result).toEqual(updatedUserMock);
+		});
+	});
 
 
 });
