@@ -48,4 +48,19 @@ userRouter.put("/account/updateAccount", validateEngineerRoute("update"), async 
 	}
 });
 
+// Atualiza a senha da conta do próprio usuário após validar a senha antiga e a confirmação
+userRouter.put("/account/updatepasswordAccount", validateEngineerRoute("ResetupdatePassword"), async (req: Request, res: Response, next: NextFunction) => {
+	try {
+	  	const { oldPassword, newPassword, confirmPassword } = req.body;
+	  	const updatedUser = await UserService.updatePasswordAccount(req.user.id, oldPassword, newPassword, confirmPassword);
+		if (updatedUser) {
+			res.status(statusCodes.SUCCESS).json({ message: "Senha redefinida com sucesso" });
+	 	} else {
+			res.status(statusCodes.NOT_FOUND).send();
+	  	}
+	} catch (error) {
+	 	 next(error);
+	}
+});
+
 export default userRouter;
