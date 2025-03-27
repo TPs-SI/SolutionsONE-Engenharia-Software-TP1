@@ -197,6 +197,25 @@ class UserService {
         return password;
     }
 
+    async deleteUser(id: number) {
+        // Verifica se o usuário existe
+        const user = await prisma.user.findUnique({
+            where: {
+                id: id
+            }
+        });
+
+        if(!user) {
+            throw new InvalidParamError("Usuário não encontrado");
+        }
+
+        // Deleta o usuário
+        const deleteuser = await prisma.user.delete({
+            where: {id}
+        });
+    	return user;
+	}
+
 }
 
 export default new UserService();
