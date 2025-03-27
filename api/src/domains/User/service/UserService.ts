@@ -1,4 +1,6 @@
 import { User } from "@prisma/client";
+import prisma from "../../../../config/prismaClient";
+
 import bcrypt from "bcrypt"
 import crypto from 'crypto';
 
@@ -17,6 +19,48 @@ class UserService {
 		const encrypted = await bcrypt.hash(password, saltRounds);
 		return encrypted;
 	}
+
+    async createUser(body: User) {
+        const checkUser = await prisma.user.findUnique({
+			where: {
+				email: body.email
+			}
+		});
+
+		if(checkUser){
+			throw new QueryError("Esse email já esta cadastrado.");
+		}
+        
+        if(body.role != null){
+            throw new NotAuthorizedError("Não é possível inserir o próprio cargo.");
+        }
+
+        if(body.status != null){
+            throw new NotAuthorizedError("Não é possível inserir o próprio status.");
+        }
+
+        if (body.password!=null){
+		const encrypted = await this.encryptPassword(body.password);
+
+        const user = await prisma.user.create({
+            data: {
+                id: body.id,
+                email: body.email,
+                name: body.name,
+                password: encrypted,
+                key:" ",
+                cellphone: body.cellphone,
+                birth: body.birth,    
+                status: "Pending",
+                role: null,
+                resetToken: null,
+                tokenExpires: null,
+            },
+            select: selectItems
+        })
+
+        return user;}}
+    }
 
 }
 
