@@ -95,6 +95,33 @@ describe("UserService", () => {
 		});
 	});
 
+	describe("readUser", () => {
+		it("deve retornar o usuário se existir", async () => {
+			const userMock = {
+				id: 1,
+				email: "teste@teste.com",
+				name: "Usuário Teste",
+				password: "hashed",
+				photo: null,
+				key: " ",
+				cellphone: "1111111111",
+				birth: "1990-01-01",
+				status: "Active",
+				role: "Member",
+				resetToken: null,
+				tokenExpires: null,
+			};
+			prismaMock.user.findUnique.mockResolvedValueOnce(userMock);
+			const result = await UserService.readUser(1);
+			expect(result).toEqual(userMock);
+		});
+
+		it("deve lançar QueryError se o usuário não for encontrado", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(null);
+			await expect(UserService.readUser(1)).rejects.toThrow(QueryError);
+		});
+	});
+
 
 
 });
