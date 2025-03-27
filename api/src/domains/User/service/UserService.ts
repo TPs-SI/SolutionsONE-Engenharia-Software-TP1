@@ -173,6 +173,30 @@ class UserService {
     return user;  
     }
 
+	async updatePassword(id: number,  password:string, confirmpassword:string) {
+        // Verifica se o usuário existe
+        if(!(await prisma.user.findUnique({where: {id}}))) {
+            throw new Error("Usuário não encontrado");
+        }
+        
+        // Verifica se as senhas são iguais
+        if(password !== confirmpassword){
+            throw new Error("As senhas não coincidem.");
+        }
+        
+        // Atualiza a senha do usuário
+        const encrypted = await this.encryptPassword(password);
+        const user = await prisma.user.update({
+			data: {
+				password: encrypted
+			},
+			where: {
+				id: id,
+			}
+        });
+        return password;
+    }
+
 }
 
 export default new UserService();
