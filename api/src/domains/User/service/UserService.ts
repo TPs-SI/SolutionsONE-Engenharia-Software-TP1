@@ -183,6 +183,11 @@ class UserService {
 			throw new Error("Usuário não encontrado");
 		}
 
+		// Impede alteração direta da foto
+		if (newinfos.photo && newinfos.photo !== user.photo) {
+			throw new NotAuthorizedError("A foto não pode ser editada por aqui!");
+		}
+
 		// Impede alteração da senha por esse método
 		if (newinfos.password && newinfos.password !== user.password) {
 			throw new Error("Não é permitido alterar a senha desta forma");
