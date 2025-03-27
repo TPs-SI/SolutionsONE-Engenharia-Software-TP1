@@ -22,4 +22,15 @@ userRouter.post("/create", validateEngineerRoute("create"), async (req: Request,
 	}
 });
 
+// Retorna os dados do próprio usuário
+userRouter.get("/account", async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userAccount = await UserService.readMyUser(req.user.id);
+		res.status(statusCodes.SUCCESS).json(userAccount);
+	} catch (error) {
+		res.status(statusCodes.NOT_FOUND).json({ error: "Erro ao visualizar sua própria conta, tente novamente." });
+		next(error);
+	}
+});
+
 export default userRouter;
