@@ -36,4 +36,19 @@ function nameValidation(optional = true): ValidationChain {
     .withMessage("Insira seu nome!");
 }
 
+// Validação de senha (padrão)
+function passwordValidation(optional = false): ValidationChain {
+  let validator = body("password");
+  if (optional) {
+    validator = validator.optional({ checkFalsy: true });
+  }
+  return validator
+    .notEmpty()
+    .withMessage("Insira sua senha!")
+    .matches(passwordRegex)
+    .withMessage(
+      "Senha inválida, deve conter no mínimo 8 dígitos, 1 número, 1 letra maiúscula e 1 caractere especial."
+    );
+}
+
 
