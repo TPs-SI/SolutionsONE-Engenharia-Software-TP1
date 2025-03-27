@@ -33,4 +33,19 @@ userRouter.get("/account", async (req: Request, res: Response, next: NextFunctio
 	}
 });
 
+// Atualiza os dados da conta do próprio usuário (exceto foto, senha, cargo e status)
+userRouter.put("/account/updateAccount", validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const updateData = req.body;
+		const updatedAccount = await UserService.updateAccount(req.user.id, updateData);
+	  if (updatedAccount) {
+			res.status(statusCodes.SUCCESS).json(updatedAccount);
+	  } else {
+			res.status(statusCodes.NOT_FOUND).send();
+	  }
+	} catch (error) {
+	  	next(error);
+	}
+});
+
 export default userRouter;
