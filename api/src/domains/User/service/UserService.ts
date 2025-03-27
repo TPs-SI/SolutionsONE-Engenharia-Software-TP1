@@ -136,6 +136,16 @@ class UserService {
             }
         }
 
+        // Verifica se o usuário está tentando alterar a foto
+        if(body.photo && body.photo !== user2.photo){
+            throw new Error("Você não tem permissão para alterar a foto deste usuári.o");
+        }
+
+        // Verifica se o usuário está tentando alterar a senha
+        if(body.password && body.password !== user2.password){
+            throw new Error("Você não tem permissão para realizar mudar a senha deste usuário.");
+        }
+
         if(body.email !== undefined && body.email !== null) {
             //	Verifica se o email já existe
             const existingEmail=await prisma.user.findUnique({where: {email: body.email}})
