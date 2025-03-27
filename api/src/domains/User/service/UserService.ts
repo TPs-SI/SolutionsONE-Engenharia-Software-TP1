@@ -173,6 +173,57 @@ class UserService {
     return user;  
     }
 
+	// Atualiza os dados da conta do usuário, com validações para impedir alterações não autorizadas
+async UpdateAccount(id: number, newinfos: Partial<User>) {
+    const user = await prisma.user.findUnique({
+        where: { id }
+    });
+
+    if (!user) {
+        throw new Error("Usuário não encontrado");
+    }
+
+    // Impede alteração da senha por esse método
+    if (newinfos.password && newinfos.password !== user.password) {
+        throw new Error("Não é permitido alterar a senha desta forma");
+    }
+
+    // Impede alteração do cargo
+    if (newinfos.role && newinfos.role !== user.role) {
+        throw new NotAuthorizedError("Não é possível editar o próprio cargo.");
+    }
+
+    // Impede alteração do status
+    if (newinfos.status && newinfos.status !== user.status) {
+        throw new NotAuthorizedError("Não é possível editar o próprio status.");
+    }
+
+    // Verifica se o novo email já está cadastrado por outro usuário
+    if (newinfos.email !== undefined && newinfos.email !== null) {
+        const userEmail = await prisma.user.findUnique({
+            where: { email: newinfos.email }
+        });
+
+        if (userEmail && userEmail.email !== user.email) {
+            throw new Error("Email já cadastrado");
+        }
+    }
+
+    // Atualiza os dados permitidos
+    const updatedUser = await prisma.user.update({
+        data: {
+            name: newinfos.name,
+            birth: newinfos.birth,
+            email: newinfos.email,
+            cellphone: newinfos.cellphone
+        },
+        where: { id },
+        select: selectItems
+    });
+
+    return updatedUser;
+}
+
 	async updatePassword(id: number,  password:string, confirmpassword:string) {
         // Verifica se o usuário existe
         if(!(await prisma.user.findUnique({where: {id}}))) {
