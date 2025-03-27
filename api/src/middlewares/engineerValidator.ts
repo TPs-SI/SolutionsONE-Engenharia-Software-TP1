@@ -51,4 +51,20 @@ function passwordValidation(optional = false): ValidationChain {
     );
 }
 
+// Validação de senha para redefinição (reset)
+function resetPasswordValidation(optional = false): ValidationChain {
+  let validator = body("newPassword");
+  if (optional) {
+    validator = validator.optional({ checkFalsy: true });
+  }
+  return validator
+    .notEmpty()
+    .withMessage("Insira sua senha!")
+    .matches(passwordRegex)
+    .withMessage(
+      "Senha inválida, deve conter no mínimo 8 dígitos, 1 número, 1 letra maiúscula e 1 caractere especial."
+    );
+}
+
+
 
