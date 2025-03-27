@@ -149,5 +149,99 @@ describe("UserService", () => {
 		});
 	});
 
+	describe("readAllUsers", () => {
+		it("deve retornar todos os usuários para um solicitante Administrator", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce({
+				...completeUserMock,
+				role: "Administrator",
+			});
+			const usersMock = [
+				{
+					id: 2,
+					name: "Usuário A",
+					email: "a@teste.com",
+					password: "hashed",
+					photo: null,
+					key: " ",
+					cellphone: "2222222222",
+					birth: "1990-01-02",
+					status: "Active",
+					role: "Member",
+					resetToken: null,
+					tokenExpires: null,
+				},
+				{
+					id: 3,
+					name: "Usuário B",
+					email: "b@teste.com",
+					password: "hashed",
+					photo: null,
+					key: " ",
+					cellphone: "3333333333",
+					birth: "1990-01-03",
+					status: "Active",
+					role: "Member",
+					resetToken: null,
+					tokenExpires: null,
+				},
+			];
+			prismaMock.user.findMany.mockResolvedValueOnce(usersMock);
+			const result = await UserService.readAllUsers(1);
+			expect(result).toEqual(usersMock);
+		});
+
+		it("deve lançar QueryError se a lista de usuários estiver vazia para solicitante Administrator", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce({
+				...completeUserMock,
+				role: "Administrator",
+			});
+			prismaMock.user.findMany.mockResolvedValueOnce([]);
+			await expect(UserService.readAllUsers(1)).rejects.toThrow(QueryError);
+		});
+
+		it("deve retornar os usuários ativos para um solicitante Member", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce({
+				...completeUserMock,
+				role: "Member",
+			});
+			const activeUsersMock = [
+				{
+					id: 2,
+					name: "Usuário A",
+					email: "a@teste.com",
+					password: "hashed",
+					photo: null,
+					key: " ",
+					cellphone: "2222222222",
+					birth: "1990-01-02",
+					status: "Active",
+					role: "Member",
+					resetToken: null,
+					tokenExpires: null,
+				},
+			];
+			prismaMock.user.findMany.mockResolvedValueOnce(activeUsersMock);
+			const result = await UserService.readAllUsers(1);
+			expect(result).toEqual(activeUsersMock);
+		});
+
+		it("deve lançar QueryError se nenhum usuário ativo existir para solicitante Member", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce({
+				...completeUserMock,
+				role: "Member",
+			});
+			prismaMock.user.findMany.mockResolvedValueOnce([]);
+			await expect(UserService.readAllUsers(1)).rejects.toThrow(QueryError);
+		});
+
+		it("deve lançar PermissionError se o solicitante não tiver permissão", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce({
+				...completeUserMock,
+				role: "InvalidRole",
+			});
+			await expect(UserService.readAllUsers(1)).rejects.toThrow(PermissionError);
+		});
+	});
+
 
 });
