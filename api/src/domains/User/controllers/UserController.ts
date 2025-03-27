@@ -81,7 +81,7 @@ userRouter.put("/account/updatephoto", async (req: Request, res: Response, next:
    * ===== Rotas Administrativas =====
    */
   
-  // Retorna a lista de usuários de acordo com o cargo do solicitante
+// Retorna a lista de usuários de acordo com o cargo do solicitante
 userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const usersList = await UserService.readAllUsers(req.user.id);
@@ -100,13 +100,29 @@ userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
 // Retorna os dados de um usuário específico (acesso para Administrador e Member)
 userRouter.get("/admin/member/read/:id", async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const userId = Number(req.params.id);
-		const userData = await UserService.readUser(userId);
-		res.status(statusCodes.SUCCESS).json(userData);
+	  const userId = Number(req.params.id);
+	  const userData = await UserService.readUser(userId);
+	  res.status(statusCodes.SUCCESS).json(userData);
+	} catch (error) {
+	  const typedError = error as Error;
+	  res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
+	  next(error);
+	}
+  });
+  
+// Permite que o administrador atualize as informações de um usuário
+userRouter.put("/admin/update/:id", validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { id } = req.params;
+		const updateData = req.body;
+		const updatedUser = await UserService.updateUserByAdmin(Number(id), updateData);
+		res.status(statusCodes.SUCCESS).json({ message: "Alterações salvas com sucesso", user: updatedUser });
 	} catch (error) {
 		const typedError = error as Error;
-		res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
+		res.status(statusCodes.FORBIDDEN).json({ error: typedError.message });
 		next(error);
-}
+	}
+});
+  
 
 export default userRouter;
