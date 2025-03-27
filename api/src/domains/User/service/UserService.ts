@@ -291,6 +291,31 @@ class UserService {
         return password;
     }
 
+	// Atualiza a foto de perfil do usuário
+	async updatephotoAccount(id: number, image: any) {
+		const user = await prisma.user.findUnique({
+			where: { id }
+		});
+
+		if (!user) {
+			throw new Error("Esse usuário não existe");
+		}
+
+		// Extrai a nova URL e chave da imagem enviada
+		const { key: chave, location: url } = image;
+
+		// Atualiza os dados do usuário com a nova foto
+		const updateuser = await prisma.user.update({
+			where: { id },
+			data: {
+				photo: url,
+				key: chave
+			}
+		});
+
+		return updateuser;
+	}
+
     async deleteUser(id: number) {
         // Verifica se o usuário existe
         const user = await prisma.user.findUnique({
