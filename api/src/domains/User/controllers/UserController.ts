@@ -82,7 +82,7 @@ userRouter.put("/account/updatephoto", async (req: Request, res: Response, next:
    */
   
   // Retorna a lista de usuários de acordo com o cargo do solicitante
-  userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const usersList = await UserService.readAllUsers(req.user.id);
 		if (usersList) {
@@ -97,5 +97,16 @@ userRouter.put("/account/updatephoto", async (req: Request, res: Response, next:
 	}
 });
 
+// Retorna os dados de um usuário específico (acesso para Administrador e Member)
+userRouter.get("/admin/member/read/:id", async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const userId = Number(req.params.id);
+		const userData = await UserService.readUser(userId);
+		res.status(statusCodes.SUCCESS).json(userData);
+	} catch (error) {
+		const typedError = error as Error;
+		res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
+		next(error);
+}
 
 export default userRouter;
