@@ -12,6 +12,12 @@ const validStatus = ['Pending', 'Active'];
 
 class UserService {
 
+	async encryptPassword(password: string) {
+		const saltRounds = 10;
+		const encrypted = await bcrypt.hash(password, saltRounds);
+		return encrypted;
+	}
+
 }
 
 export default new UserService();
