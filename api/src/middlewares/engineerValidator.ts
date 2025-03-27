@@ -91,3 +91,30 @@ function birthValidation(optional = true): ValidationChain {
     .matches(dateRegex)
     .withMessage("Data de nascimento deve estar no formato DD/MM/YYYY");
 }
+
+/* ============================ */
+/*      Rotas de Validação      */
+/* ============================ */
+
+// Função que retorna as validações de acordo com a rota solicitada
+function getEngineerValidations(route: string) {
+	switch (route) {
+	  case "create":
+		return [
+		  emailValidation(),
+		  nameValidation(),
+		  passwordValidation(),
+		  cellphoneValidation(),
+		  birthValidation(),
+		];
+	  case "update":
+		return [
+		  emailValidation(),
+		  nameValidation(),
+		  cellphoneValidation(),
+		  birthValidation(),
+		];
+	  default:
+		return [];
+	}
+  }
