@@ -63,4 +63,18 @@ userRouter.put("/account/updatepasswordAccount", validateEngineerRoute("Resetupd
 	}
 });
 
+// Atualiza a foto de perfil do usuário
+userRouter.put("/account/updatephoto", async (req: Request, res: Response, next: NextFunction) => {
+	try {
+	  	const updatedUser = await UserService.updatePhotoAccount(req.user.id, req.file);
+	  	if (updatedUser) {
+			res.status(statusCodes.SUCCESS).json(updatedUser);
+	  	} else {
+			res.status(statusCodes.BAD_REQUEST).json("Erro ao salvar imagem em cache.");
+	  	}
+	} catch (error) {
+	  	next(error);
+	}
+});
+
 export default userRouter;
