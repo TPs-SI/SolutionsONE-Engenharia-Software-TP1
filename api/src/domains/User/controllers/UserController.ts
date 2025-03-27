@@ -138,4 +138,17 @@ userRouter.put("/admin/update/password/:id", validateEngineerRoute("updatePasswo
 	}
 });
 
+// Permite que o administrador delete um usuário
+userRouter.delete("/admin/remove/:id", async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { id } = req.params;
+		const deletedUser = await UserService.deleteUser(Number(id));
+		res.status(statusCodes.SUCCESS).json({ message: "Usuário deletado com sucesso", user: deletedUser });
+	} catch (error) {
+		const typedError = error as Error;
+		res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
+		next(error);
+	}
+});
+
 export default userRouter;
