@@ -366,5 +366,48 @@ describe("UserService", () => {
 		});
 	});
 
+	describe("updatePasswordAccount", () => {
+		const user = {
+			id: 1,
+			password: "hashedOld",
+			email: "teste@teste.com",
+			name: "Usuário Teste",
+			photo: null,
+			key: " ",
+			cellphone: "1111111111",
+			birth: "1990-01-01",
+			status: "Active",
+			role: "Member",
+			resetToken: null,
+			tokenExpires: null,
+		};
+
+		it("deve lançar erro se o usuário não for encontrado", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(null);
+			await expect(UserService.updatePasswordAccount(1, "old", "new", "new")).rejects.toThrow("Usuário não encontrado");
+		});
+
+		it("deve lançar erro se a senha antiga estiver incorreta", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(user);
+			jest.spyOn(bcrypt, "compareSync").mockReturnValueOnce(false);
+			await expect(UserService.updatePasswordAccount(1, "senhaErrada", "new", "new")).rejects.toThrow("A senha antiga digitada está errada, tente novamente!");
+		});
+
+		it("deve lançar erro se as novas senhas não coincidirem", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(user);
+			jest.spyOn(bcrypt, "compareSync").mockReturnValueOnce(true);
+			await expect(UserService.updatePasswordAccount(1, "old", "new", "diferente")).rejects.toThrow("As senhas não são iguais.");
+		});
+
+		it("deve atualizar a senha com sucesso", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(user);
+			jest.spyOn(bcrypt, "compareSync").mockReturnValueOnce(true);
+			jest.spyOn(UserService, "encryptPassword").mockResolvedValueOnce("hashedNew");
+			prismaMock.user.update.mockResolvedValueOnce({ ...user, password: "hashedNew" });
+			const result = await UserService.updatePasswordAccount(1, "old", "new", "new");
+			expect(result).toBeDefined();
+		});
+	});
+
 
 });
