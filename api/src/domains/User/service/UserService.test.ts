@@ -243,5 +243,67 @@ describe("UserService", () => {
 		});
 	});
 
+	describe("updateUserByAdmin", () => {
+		const existingUser = {
+			id: 1,
+			email: "teste@teste.com",
+			name: "Usuário Teste",
+			photo: "foto.jpg",
+			password: "hashed",
+			key: " ",
+			cellphone: "1111111111",
+			birth: "1990-01-01",
+			status: "Active",
+			role: "Member",
+			resetToken: null,
+			tokenExpires: null,
+		};
+
+		it("deve lançar erro se o usuário não existir", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(null);
+			await expect(UserService.updateUserByAdmin(1, {})).rejects.toThrow("Usuário não encontrado.");
+		});
+
+		it("deve lançar erro para cargo inválido", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(existingUser);
+			await expect(UserService.updateUserByAdmin(1, { role: "CargoInvalido" })).rejects.toThrow("Cargo inválido");
+		});
+
+		it("deve lançar erro para status inválido", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(existingUser);
+			await expect(UserService.updateUserByAdmin(1, { status: "StatusInvalido" })).rejects.toThrow("Status inválido");
+		});
+
+		it("deve lançar erro ao tentar alterar a foto", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(existingUser);
+			await expect(UserService.updateUserByAdmin(1, { photo: "novaFoto.jpg" })).rejects.toThrow("Você não tem permissão para alterar a foto deste usuário");
+		});
+
+		it("deve lançar erro ao tentar alterar a senha", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(existingUser);
+			await expect(UserService.updateUserByAdmin(1, { password: "novaSenha" })).rejects.toThrow("Você não tem permissão para mudar a senha deste usuário.");
+		});
+
+		it("deve lançar erro se o novo email já estiver cadastrado por outro usuário", async () => {
+			prismaMock.user.findUnique
+				.mockResolvedValueOnce(existingUser) // verifica existência do usuário a ser atualizado
+				.mockResolvedValueOnce({
+					...completeUserMock,
+					id: 2,
+					email: "novoemail@teste.com",
+				}); // email em uso por outro
+			await expect(UserService.updateUserByAdmin(1, { email: "novoemail@teste.com" })).rejects.toThrow("Email já cadastrado");
+		});
+
+		it("deve atualizar e retornar o usuário", async () => {
+			prismaMock.user.findUnique.mockResolvedValueOnce(existingUser);
+			prismaMock.user.findUnique.mockResolvedValueOnce(null); // verificação de email
+			const updatedUserMock = { ...existingUser, name: "Usuário Atualizado" };
+			prismaMock.user.update.mockResolvedValueOnce(updatedUserMock);
+			const result = await UserService.updateUserByAdmin(1, { name: "Usuário Atualizado" });
+			expect(result).toEqual(updatedUserMock);
+		});
+	});
+
 
 });
