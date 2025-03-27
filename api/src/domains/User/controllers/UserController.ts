@@ -124,5 +124,18 @@ userRouter.put("/admin/update/:id", validateEngineerRoute("update"), async (req:
 	}
 });
   
+// Permite que o administrador atualize a senha de um usuário
+userRouter.put("/admin/update/password/:id", validateEngineerRoute("updatePassword"), async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const { id } = req.params;
+		const { password, confirmPassword } = req.body;
+		const updatedPassword = await UserService.updatePassword(Number(id), password, confirmPassword);
+		res.status(statusCodes.SUCCESS).json({ message: "Senha alterada com sucesso", password: updatedPassword });
+	} catch (error) {
+		const typedError = error as Error;
+		res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
+		next(error);
+	}
+});
 
 export default userRouter;
