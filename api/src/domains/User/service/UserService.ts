@@ -216,6 +216,20 @@ class UserService {
     	return user;
 	}
 
+	// Retornar informações do próprio usuário 
+	async readMyUser(id: number) {
+		const user = await prisma.user.findUnique({
+			where: {id: id},
+			select: selectItems2
+		});
+	
+		if(!user){
+			throw new QueryError("Usuário invalido ou inexistente.");
+		}
+	
+		return user;
+	}
+
 }
 
 export default new UserService();
