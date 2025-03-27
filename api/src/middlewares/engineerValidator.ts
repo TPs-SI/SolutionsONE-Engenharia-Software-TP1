@@ -99,22 +99,45 @@ function birthValidation(optional = true): ValidationChain {
 // Função que retorna as validações de acordo com a rota solicitada
 function getEngineerValidations(route: string) {
 	switch (route) {
-	  case "create":
-		return [
-		  emailValidation(),
-		  nameValidation(),
-		  passwordValidation(),
-		  cellphoneValidation(),
-		  birthValidation(),
-		];
-	  case "update":
-		return [
-		  emailValidation(),
-		  nameValidation(),
-		  cellphoneValidation(),
-		  birthValidation(),
-		];
-	  default:
-		return [];
+		case "create":
+			return [
+			emailValidation(),
+			nameValidation(),
+			passwordValidation(),
+			cellphoneValidation(),
+			birthValidation(),
+			];
+		case "update":
+			return [
+			emailValidation(),
+			nameValidation(),
+			cellphoneValidation(),
+			birthValidation(),
+			];
+		default:
+			return [];
+		}
 	}
-  }
+
+// Middleware que executa as validações para a rota do engenheiro
+export function validateEngineerRoute(route: string) {
+	const validations = getEngineerValidations(route);
+
+	return async (req: Request, res: Response, next: NextFunction) => {
+		if (!validations) {
+			return next();
+	}
+
+		for (const validation of validations) {
+			await validation.run(req);
+		}
+
+			const errors = validationResult(req);
+
+		if (errors.isEmpty()) {
+			return next();
+		}
+
+		res.status(400).json(errors.array());
+	};
+}
