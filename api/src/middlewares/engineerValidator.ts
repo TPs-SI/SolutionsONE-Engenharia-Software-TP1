@@ -25,3 +25,15 @@ function emailValidation(optional = true): ValidationChain {
     .withMessage("Email inválido!");
 }
 
+// Validação de nome
+function nameValidation(optional = true): ValidationChain {
+  let validator = body("name");
+  if (optional) {
+    validator = validator.optional({ checkFalsy: true });
+  }
+  return validator
+    .notEmpty()
+    .withMessage("Insira seu nome!");
+}
+
+
