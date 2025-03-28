@@ -1,0 +1,170 @@
+@media (min-width: 769px){
+    .item-div-usuario{
+        margin: 20px 5rem 0 5rem;
+    }
+ 
+}
+
+.thrash-icon{
+    cursor: pointer;
+    align-content: center;
+}
+
+.item-div-usuario{
+    border-top: 1px solid rgb(230, 230, 230);
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    width: 94%;
+}
+
+.item-div-usuario:last-of-type{
+    border-bottom: 1px solid rgb(230, 230, 230);
+    padding-bottom: 20px;
+}
+
+.item-name,.item-email,.item-status,.item-cargo{
+    font-size: 16px;
+    color: rgb(120,120,120);
+    font-weight: 300;
+    text-align:left;
+    justify-content: center;
+    margin-top: 18px;
+    align-items: center;
+    height: fit-content;
+    width: 28%;
+}
+
+.item-status{
+   position: relative;
+}
+
+.item-cargo{
+  position: relative;
+}
+
+.item-email{
+    position: relative;
+    height: fit-content;
+}
+
+.item-email, .item-name {
+    overflow-x: auto;
+}
+
+.icons-div{
+    align-items: center;
+    justify-content: center;
+    flex-direction: row; 
+    display: flex;
+    margin-top: 18px;
+}
+
+.edit-icon{
+    margin-right: 10px;
+    height: fit-content;
+    cursor: pointer;
+    align-content: center;
+}
+
+.aux-status-cargo{
+    display: flex;
+    width: 38%;
+    justify-content: space-between;
+}
+
+
+.item-info{
+    display:flex;
+    flex-direction: row;
+    padding-right: 10%;
+    width: 100%;
+}
+@media (min-width: 1001px )and (max-width:1400px) {
+    .icons-div{
+        margin-right: 3%;
+    }
+    .aux-status-cargo{
+        width: 34%;  
+        margin-left: 10px;
+    }
+}
+
+@media (min-width: 769px )and (max-width:1100px) {
+    .item-name,.item-email,.item-status,.item-cargo{
+        font-size: 1.2vw; 
+    }
+    .icons-div{
+        margin-right: 9%;
+    }
+    .aux-status-cargo{
+        width: 30%;  
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .item-div-usuario{  
+        padding: 0rem 3rem 0rem 3rem;
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-between;
+        height: fit-content;
+    }
+
+    .item-div-usuario:last-of-type{
+       padding-bottom: 3rem;
+    }
+
+    .icons-div{
+        align-items: center;
+        justify-content: center;
+        flex-direction:row; 
+        display: flex;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        margin-right: 0%;
+        position: relative;
+    }
+
+    .edit-icon, .thrash-icon{
+        height: 100%;
+    }
+
+    .item-name,.item-email,.item-status,.item-cargo{
+        margin-top: 2px;
+        margin-bottom: 2px;
+        width: fit-content;
+    }
+
+    .item-email{
+        position: relative;
+        
+        font-size: 12px;
+        
+    }
+
+    .item-status{
+        position: relative;
+       
+        width: fit-content;
+        font-size: 12px;
+        padding-right: 3px;
+        border-right: 1px solid rgb(180, 180, 180);
+    }
+
+    .item-cargo{
+        position: relative;
+        width: fit-content;
+        font-size: 12px;
+        padding-left: 3px;
+    }
+    .item-info{
+        display:flex;
+        flex-direction: column;
+    }
+    .aux-status-cargo{
+        display: flex;
+        width: fit-content;
+    }
+}
