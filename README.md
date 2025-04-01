@@ -153,7 +153,7 @@ Como **Usuário**, quero integrar o sistema ao meu calendário pessoal para gere
 Primeiro, instale as dependências para ambos frontend (pasta client/) e backend (pasta api/):<br>
 `cd api` <br>
 `npm i` <br>
-`cd ../backend` <br>
+`cd ../client` <br>
 `npm i` <br><br>
 
 Após isso, basta rodar o docker compose:<br>
