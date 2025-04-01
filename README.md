@@ -137,7 +137,24 @@ Como **Usuário**, quero integrar o sistema ao meu calendário pessoal para gere
 - **Linguagem:** Typescript
 - **Frontend:** React
 - **Backend:** Node.js
-- **Banco de Dados:** MySQL
+- **Banco de Dados:** PostgreSQL
 - **ORM:** Prisma
 - **Testes:** Jest
 - **Gerenciamento de Versionamento:** Git/GitHub
+
+# 💻 Como rodar o projeto
+
+### Pré-requisitos:
+- Node e NPM
+- Docker
+
+<br>
+
+Primeiro, instale as dependências para ambos frontend (pasta client/) e backend (pasta api/):<br>
+`cd api` <br>
+`npm i` <br>
+`cd ../backend` <br>
+`npm i` <br><br>
+
+Após isso, basta rodar o docker compose:<br>
+`docker compose up -d`
