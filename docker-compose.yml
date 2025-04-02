@@ -1,16 +1,62 @@
 services:
-  mysql:
-    image: ${IMAGEM_BD}
-    container_name: ${NOME_CONTAINER_BD}
-    ports:
-      - "${PORTA_BD_HOST}:${PORTA_BD_CONTAINER}"
+  backend:
+    build:
+      context: api
+    container_name: backend
+    command: npm start
     volumes:
-      - ${NOME_VOLUME_BD}
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - ./api:/usr/src/app
+    tty: true
+    ports:
+      - "3030:3030"
+    networks:
+      - solutions_one_network
+    env_file:
+      - ./api/.env
+
+  frontend:
+    build:
+      context: client
+    container_name: frontend
+    command: npm run dev
+    volumes:
+      - ./client:/usr/src/app
+    tty: true
+    ports:
+      - "5173:5173"
+    networks:
+      - solutions_one_network
+
+
+  postgres:
+    build:
+      context: ./database
+    container_name: postgres
+    env_file:
+      - ./database/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - solutions_one_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    env_file:
+      - ./database/.env
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - solutions_one_network
+
+networks:
+  solutions_one_network:
+    name: solutions_one_network
+    driver: bridge
 
 volumes:
-  my_db:
+  postgres_data:
