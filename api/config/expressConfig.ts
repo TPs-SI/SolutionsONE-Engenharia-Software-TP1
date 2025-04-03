@@ -5,6 +5,7 @@ import errorHandler from '../src/middlewares/erroHandler';
 import cookieParser from "cookie-parser";
 
 import userRouter from "../src/domains/User/controllers/UserController";
+import projectRouter from "../src/domains/Project/controllers/ProjectController";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({
 
 // Aqui ficarão as rotas
 app.use("/api/users", userRouter);
+app.use("/api/projects", projectRouter);
 app.use(errorHandler);
 
 export default app;
