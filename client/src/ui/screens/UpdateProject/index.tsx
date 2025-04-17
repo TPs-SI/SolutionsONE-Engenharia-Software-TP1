@@ -221,7 +221,7 @@ const UpdateProject = () => {
                                     <input type="text" id="function-0" name="team[0][function]" value={currentFunction} placeholder="Ex: Tester" required onChange={e => setCurrentFunction(e.target.value)} />
                                 </div>
                                 <button type="button" id="add-member-btn" className="button button-secondary" onClick={addMember}>
-                                    <i className="fas fa-user-plus"></i>Adicionar
+                                    Adicionar
                                 </button>
                             </div>
                             </div>
@@ -230,7 +230,7 @@ const UpdateProject = () => {
 
                     <div className="form-actions">
                         <button type="button" className="button button-primary" onClick={handleFormSubmit}>
-                            <i className="fas fa-check-circle"></i> Atualizar Projeto
+                            Atualizar Projeto
                         </button>
                     </div>
                 </form>

@@ -46,10 +46,10 @@ const SpecificProject = () => {
                     <h1>{project?.name}</h1>
                     <div>
                         <Link to={`/update-project/${projectId}`} className="edit-button">
-                            <i className="fas fa-pencil-alt"></i> Editar
+                            Editar
                         </Link>
                         <button className="delete-button" onClick={deleteProject}>
-                            <i className="fas fa-pencil-alt"></i>Excluir
+                            Excluir
                         </button>
                     </div>
                 </header>

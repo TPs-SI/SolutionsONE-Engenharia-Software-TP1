@@ -11,7 +11,7 @@ interface FloatingLinkProps {
 const FloatingLink = ({ text, link }: FloatingLinkProps) => {
     return (
         <Link to={link} className="floating-link">
-            <i className="fas fa-plus"></i>{text}
+            {text}
         </Link>
     );
 }

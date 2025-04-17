@@ -9,7 +9,7 @@ interface FloatingButtonProps {
 const FloatingButton = ({ text }: FloatingButtonProps) => {
     return (
         <button className="floating-button">
-            <i className="fas fa-plus"></i>{text}
+            {text}
         </button>
     );
 }
