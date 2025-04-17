@@ -1,4 +1,4 @@
-const itensPermitidos = ["id", "email", "name", "photo", "cellphone","birth","github","status","role", "projects"];
+const itensPermitidos = ["id", "email", "name", "photo", "cellphone","birth","status","role", "projects"];
 
 export const selectItems = Object.fromEntries(
 	itensPermitidos.map(item => [item, true])
