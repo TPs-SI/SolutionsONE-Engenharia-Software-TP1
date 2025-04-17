@@ -15,6 +15,7 @@ import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 
 const ProjectsList = () => {
     const [projects, setProjects] = useState<Project[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         loadAllProjects();
@@ -22,6 +23,7 @@ const ProjectsList = () => {
 
     const loadAllProjects = async () => {
         const { data: projects } = await api.get<Project[]>("/projects");
+
 
         setProjects(projects);
     }
@@ -34,18 +36,20 @@ const ProjectsList = () => {
                 <ListHeader
                     title="Projetos"
                     icon={faProjectDiagram}
-                    onSearch={() => {}}
+                    onSearch={setSearchQuery}
                 />
 
                 <ListRenderer>
                     {
-                        projects.map(project => (
-                            <ListItem
-                                key={project.id}
-                                title={project.name}
-                                subtitle={`Entrega: ${project.date}`}
-                                link={`/projects/${project.id}`}
-                            />
+                        projects
+                            .filter(project => project.name.toLowerCase().includes(searchQuery.toLowerCase()))
+                            .map(project => (
+                                <ListItem
+                                    key={project.id}
+                                    title={project.name}
+                                    subtitle={`Entrega: ${project.date}`}
+                                    link={`/projects/${project.id}`}
+                                />
                         ))
                     }
                 </ListRenderer>
