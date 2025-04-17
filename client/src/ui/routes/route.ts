@@ -1,3 +1,5 @@
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+
 export interface Route {
     link: string;
     component: React.FC;
@@ -5,7 +7,7 @@ export interface Route {
 }
 
 export interface MenuConfig {
-    icon: string;
     displayName: string;
+    icon: IconDefinition;
     keyword: string;
 }

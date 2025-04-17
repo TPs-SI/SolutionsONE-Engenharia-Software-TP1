@@ -1,6 +1,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCog } from '@fortawesome/free-solid-svg-icons';
+
 import pages from "../../routes/pages";
 
 import "./styles.css";
@@ -25,7 +28,7 @@ const Sidebar = () => {
                                 className={pathname.includes(page.menuConfig!.keyword) ? "active" : ""}
                             >
                                 <span className="icon">
-                                    <i className={page.menuConfig?.icon}></i>
+                                    <FontAwesomeIcon icon={page.menuConfig!.icon}/>
                                 </span>
                                 <span className="text">{page.menuConfig?.displayName}</span>
                             </Link>
@@ -40,7 +43,7 @@ const Sidebar = () => {
 
                 <div className="user-name">Júlia</div>
                 <div className="settings-icon">
-                    <i className="fas fa-cog"></i>
+                    <FontAwesomeIcon icon={faCog}/>
                 </div>
             </div>
         </div>

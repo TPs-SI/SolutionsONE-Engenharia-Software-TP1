@@ -7,3 +7,7 @@ body {
     color: #ccd6f6; /* Cor de texto clara padrão */
     padding-bottom: 80px; /* Espaço para o botão fixo não cobrir o último item */
 }
+
+svg {
+    margin-right: 8px;
+}

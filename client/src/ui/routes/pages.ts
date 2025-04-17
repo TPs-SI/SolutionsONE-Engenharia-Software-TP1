@@ -1,4 +1,5 @@
 import React from "react";
+import { faFileContract, faProjectDiagram, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 import { Route } from "./route";
 
@@ -13,7 +14,7 @@ const pages: Route[] = [
         component: ProjectsList,
         menuConfig: {
             displayName: "Projetos",
-            icon: "briefcase",
+            icon: faProjectDiagram,
             keyword: "project"
         },
     },
@@ -22,7 +23,7 @@ const pages: Route[] = [
         component: ProjectsList,
         menuConfig: {
             displayName: "Usuários",
-            icon: "users",
+            icon: faUsers,
             keyword: "user"
         }
     },
@@ -31,7 +32,7 @@ const pages: Route[] = [
         component: ProjectsList,
         menuConfig: {
             displayName: "Contratos",
-            icon: "file-contract",
+            icon: faFileContract,
             keyword: "contract"
         }
     },

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import api from "../../../config/api";
 import { Project } from "../../../domain/models/project";
 
@@ -70,7 +73,7 @@ const SpecificProject = () => {
                     <p><strong>Data:</strong> {project?.contract?.date}</p>
                     <p><strong>Cliente:</strong> {project?.contract?.nameClient}</p>
                     <a href={project?.contract?.archivePath} className="download-button" download>
-                        <i className="fas fa-download"></i> Baixar arquivo
+                        <FontAwesomeIcon icon={faDownload} />Baixar arquivo
                     </a>
                 </section>
 

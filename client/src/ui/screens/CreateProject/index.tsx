@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAdd } from '@fortawesome/free-solid-svg-icons';
+
 import { Project } from "../../../domain/models/project";
 import { Contract } from "../../../domain/models/contract";
 import { User } from "../../../domain/models/user";
@@ -142,7 +145,7 @@ const CreateProject = () => {
 
             <DefaultContainer>
                 <header className="create-header">
-                    <h1><i className="fas fa-plus-circle"></i>Criar Novo Projeto</h1>
+                    <h1><FontAwesomeIcon icon={faAdd} />Criar Novo Projeto</h1>
                 </header>
 
                 <form id="create-project-form">

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Project } from "../../../domain/models/project";
 
 import api from "../../../config/api";
@@ -161,7 +164,7 @@ const UpdateProject = () => {
 
             <DefaultContainer>
                 <header className="create-header">
-                    <h1><i className="fas fa-plus-circle"></i>Atualizar Projeto</h1>
+                    <h1><FontAwesomeIcon icon={faEdit} />Atualizar Projeto</h1>
                 </header>
 
                 <form id="create-project-form">

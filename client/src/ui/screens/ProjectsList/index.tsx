@@ -11,6 +11,7 @@ import ListItem from "../../components/ListItem";
 import Sidebar from "../../components/Sidebar";
 import DefaultContainer from "../../components/DefaultContainer";
 import FloatingLink from "../../components/FloatingLink";
+import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 
 const ProjectsList = () => {
     const [projects, setProjects] = useState<Project[]>([]);
@@ -30,7 +31,11 @@ const ProjectsList = () => {
             <Sidebar />
 
             <DefaultContainer>
-                <ListHeader title="Projetos" onSearch={() => {}} />
+                <ListHeader
+                    title="Projetos"
+                    icon={faProjectDiagram}
+                    onSearch={() => {}}
+                />
 
                 <ListRenderer>
                     {
