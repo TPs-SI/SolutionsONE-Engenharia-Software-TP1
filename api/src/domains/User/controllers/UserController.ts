@@ -84,7 +84,7 @@ userRouter.put("/account/updatephoto", async (req: Request, res: Response, next:
 // Retorna a lista de usuários de acordo com o cargo do solicitante
 userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const usersList = await UserService.readAllUsers(req.user.id);
+		const usersList = await UserService.readAllUsers(1/*req.user.id*/);
 		if (usersList) {
 			res.status(statusCodes.SUCCESS).json(usersList);
 		} else {

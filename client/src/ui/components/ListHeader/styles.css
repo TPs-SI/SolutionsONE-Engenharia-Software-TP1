@@ -1,0 +1,49 @@
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: 60px;
+}
+
+.list-header h1 {
+    font-size: 1.8em;
+    color: #e6f1ff; /* Cor do título um pouco mais clara */
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.list-header h1 i {
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: #a8b2d1; /* Cor do ícone */
+}
+
+.search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 15px;
+    color: #8892b0; /* Cor do ícone de busca */
+    font-size: 0.9em;
+}
+
+.search-bar input {
+    background-color: #fff; /* Fundo branco da barra de busca */
+    border: none;
+    border-radius: 20px; /* Bordas arredondadas */
+    padding: 10px 15px 10px 15px; /* Espaçamento interno (esquerda maior para o ícone) */
+    width: 250px; /* Largura da barra */
+    font-size: 0.9em;
+    color: #333; /* Cor do texto dentro da busca */
+    outline: none; /* Remove a borda de foco padrão */
+}
+
+.search-bar input::placeholder {
+    color: #a0a0a0; /* Cor do placeholder */
+}

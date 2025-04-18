@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getAllUsers } from "../Services/api"; 
-import List from "../Components/List";
+import { getAllUsers } from "../../Services/api"; 
+import List from "../components/List";
 
 interface IUsuario {
   id: number;
