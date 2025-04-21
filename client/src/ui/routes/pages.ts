@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import { faFileContract, faProjectDiagram, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 import { Route } from "./route";
@@ -7,8 +7,13 @@ import ProjectsList from "../screens/ProjectsList";
 import CreateProject from "../screens/CreateProject";
 import SpecificProject from "../screens/SpecificProject";
 import UpdateProject from "../screens/UpdateProject";
+import LoginScreen from "../screens/Login"; 
 
 const pages: Route[] = [
+    {
+        link: "/login", 
+        component: LoginScreen,
+    },
     {
         link: "/projects",
         component: ProjectsList,
