@@ -47,7 +47,7 @@ function passwordValidation(optional = false): ValidationChain {
     .withMessage("Insira sua senha!")
     .matches(passwordRegex)
     .withMessage(
-      "Senha inválida, deve conter no mínimo 8 dígitos, 1 número, 1 letra maiúscula e 1 caractere especial."
+      "Senha inválida, deve conter no mínimo 8 dígitos. Dentre eles um número, uma letra maiúscula, uma letra minúscula e 1 caractere especial."
     );
 }
 

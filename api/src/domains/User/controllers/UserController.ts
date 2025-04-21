@@ -25,6 +25,7 @@ userRouter.post("/create", validateEngineerRoute("create"), async (req: Request,
 // Retorna os dados do próprio usuário
 userRouter.get("/account", async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		// @ts-ignore 
 		const userAccount = await UserService.readMyUser(req.user.id);
 		res.status(statusCodes.SUCCESS).json(userAccount);
 	} catch (error) {
@@ -37,6 +38,7 @@ userRouter.get("/account", async (req: Request, res: Response, next: NextFunctio
 userRouter.put("/account/updateAccount", validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const updateData = req.body;
+		// @ts-ignore 
 		const updatedAccount = await UserService.updateAccount(req.user.id, updateData);
 	  if (updatedAccount) {
 			res.status(statusCodes.SUCCESS).json(updatedAccount);
@@ -52,6 +54,7 @@ userRouter.put("/account/updateAccount", validateEngineerRoute("update"), async 
 userRouter.put("/account/updatepasswordAccount", validateEngineerRoute("ResetupdatePassword"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
 	  	const { oldPassword, newPassword, confirmPassword } = req.body;
+		// @ts-ignore 
 	  	const updatedUser = await UserService.updatePasswordAccount(req.user.id, oldPassword, newPassword, confirmPassword);
 		if (updatedUser) {
 			res.status(statusCodes.SUCCESS).json({ message: "Senha redefinida com sucesso" });
@@ -66,6 +69,7 @@ userRouter.put("/account/updatepasswordAccount", validateEngineerRoute("Resetupd
 // Atualiza a foto de perfil do usuário
 userRouter.put("/account/updatephoto", async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		// @ts-ignore 
 	  	const updatedUser = await UserService.updatePhotoAccount(req.user.id, req.file);
 	  	if (updatedUser) {
 			res.status(statusCodes.SUCCESS).json(updatedUser);
