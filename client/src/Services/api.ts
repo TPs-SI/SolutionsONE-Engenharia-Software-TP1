@@ -1,4 +1,5 @@
 import axios from "axios";
+import { LoginCredentials, LoginResponse, UserData } from "../domain/models/auth";
 
 const api = axios.create({
     baseURL: "http://localhost:3030/api",
@@ -6,9 +7,9 @@ const api = axios.create({
 });
 
 // Retorna um usuário pelo ID
-export const getUserById = async (userId: number) => {
-    const response = await api.get(`/users/admin/member/read/${userId}`);
-    return response.data;
+export const getUserById = async (userId: number): Promise<UserData> => {
+  const response = await api.get(`/users/admin/member/read/${userId}`);
+  return response.data;
 };
 
 // Atualiza os dados de um usuário
@@ -51,6 +52,24 @@ export const createUser = async (userData: {
 export const getAllUsers = async () => {
   const response = await api.get("/users/");
   return response.data;
+};
+
+/**
+ * Envia as credenciais de login para a API.
+ * @param credentials - Objeto contendo email e password.
+ * @returns Promise com a resposta da API (espera-se { token: string }).
+ */
+export const loginUser = async (credentials: LoginCredentials): Promise<LoginResponse> => {
+  try {
+      const response = await api.post<LoginResponse>("/auth/login", credentials);
+      return response.data;
+  } catch (error) {
+      console.error("Erro no login:", error);
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+          throw new Error("Email ou senha inválidos.");
+      }
+      throw new Error("Erro ao tentar fazer login.");
+  }
 };
 
 export default api;
