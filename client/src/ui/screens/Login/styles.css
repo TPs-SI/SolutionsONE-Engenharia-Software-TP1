@@ -1,0 +1,134 @@
+/* Estilos básicos para o layout da tela de Login - AJUSTE CONFORME NECESSÁRIO */
+.login-page-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #0a192f; /* Azul escuro de fundo (baseado nos mockups) */
+    color: #ccd6f6; /* Cor de texto clara */
+}
+
+.login-info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* ou align-items: flex-start; */
+    padding: 40px;
+    text-align: center; /* ou text-align: left; */
+}
+
+.login-info-section h1 {
+    font-size: 3rem; /* Ajuste tamanho */
+    color: #64ffda; /* Verde/ciano (cor destaque) */
+    margin-bottom: 1rem;
+}
+
+.login-info-section p {
+    font-size: 1.2rem;
+    max-width: 400px; /* Limitar largura */
+}
+
+.login-info-section strong {
+    color: #64ffda;
+    text-decoration: underline; /* Baseado no mockup */
+}
+
+
+.login-form-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #112240; /* Azul um pouco mais claro */
+    padding: 40px;
+}
+
+.login-form-card {
+    background-color: #ffffff; /* Card branco */
+    color: #0a192f; /* Texto escuro dentro do card */
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px; /* Largura máxima do card */
+    text-align: center;
+}
+
+.login-form-card h2 {
+    margin-bottom: 25px;
+    color: #0a192f;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Para padding não aumentar tamanho total */
+    background-color: #f8f9fa; /* Fundo levemente cinza para input */
+    color: #0a192f;
+}
+
+.forgot-password-link {
+    display: block;
+    text-align: right;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #007bff; /* Cor link padrão ou ajuste */
+    text-decoration: none;
+}
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #64ffda; /* Cor destaque */
+    color: #0a192f; /* Texto escuro no botão */
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px; /* Espaço acima do botão */
+}
+
+.login-button:hover {
+    background-color: #52d8c7; /* Cor um pouco mais escura no hover */
+}
+
+.register-link-container {
+    margin-top: 25px;
+    font-size: 0.9rem;
+}
+
+.register-link-container a {
+     color: #007bff; /* Cor link padrão ou ajuste */
+     text-decoration: none;
+     font-weight: bold;
+}
+.register-link-container a:hover {
+     text-decoration: underline;
+}
+
+.error-message {
+    color: #dc3545; /* Vermelho para erros */
+    font-size: 0.85rem;
+    margin-top: -10px; /* Aproximar da senha */
+    margin-bottom: 15px;
+    text-align: left;
+}
