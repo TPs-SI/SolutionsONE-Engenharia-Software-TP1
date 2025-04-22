@@ -4,6 +4,7 @@ import { createUser } from "../../../Services/api";
 
 import Sidebar from "../../components/Sidebar";
 import DefaultContainer from "../../components/DefaultContainer";
+import { useNavigate } from "react-router-dom";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -83,6 +84,8 @@ const CreateUser = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -97,15 +100,12 @@ const CreateUser = () => {
       role: null,
     };
 
-    console.log("Enviando dados para API:", payload); // 🐞 DEBUG
-
     setLoading(true);
     try {
       const response = await createUser(payload);
-      console.log("Resposta da API:", response); // 🐞 DEBUG
+      navigate("/users");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.error("Erro completo:", err); // 🐞 DEBUG
       const message =
         err?.response?.data?.message || err?.message || "Erro ao criar usuário";
       setErrors({ form: message });
