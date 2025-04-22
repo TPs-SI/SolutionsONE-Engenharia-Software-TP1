@@ -1,10 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import prisma from "../../../../config/prismaClient";
-import { Router, Request, Response, NextFunction} from "express";
+import { Router, Request, Response, NextFunction } from "express";
 
 import UserService from "../service/UserService";
 import statusCodes from "../../../../utils/constants/statusCodes";
 import { validateEngineerRoute } from "../../../middlewares/engineerValidator";
+import authMiddleware from "../../../middlewares/auth";
+import { LoginError } from "../../../../errors/LoginError";
 
 const userRouter = Router();
 
@@ -22,11 +24,17 @@ userRouter.post("/create", validateEngineerRoute("create"), async (req: Request,
 	}
 });
 
+/*===== Rotas que Exigem Autenticação ===== */
+
 // Retorna os dados do próprio usuário
-userRouter.get("/account", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/account", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		if (!req.user) {
+			return next(new LoginError("Usuário não autenticado."));
+		}
+
 		// @ts-ignore 
-		const userAccount = await UserService.readMyUser(req.user.id);
+		const userAccount = await UserService.readMyUser(req.user.userId);
 		res.status(statusCodes.SUCCESS).json(userAccount);
 	} catch (error) {
 		res.status(statusCodes.NOT_FOUND).json({ error: "Erro ao visualizar sua própria conta, tente novamente." });
@@ -35,60 +43,75 @@ userRouter.get("/account", async (req: Request, res: Response, next: NextFunctio
 });
 
 // Atualiza os dados da conta do próprio usuário (exceto foto, senha, cargo e status)
-userRouter.put("/account/updateAccount", validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put("/account/updateAccount", authMiddleware, validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const updateData = req.body;
+
+		if (!req.user) {
+			return next(new LoginError("Usuário não autenticado."));
+		}
+
 		// @ts-ignore 
-		const updatedAccount = await UserService.updateAccount(req.user.id, updateData);
-	  if (updatedAccount) {
+		const updatedAccount = await UserService.updateAccount(req.user.userId, updateData);
+		if (updatedAccount) {
 			res.status(statusCodes.SUCCESS).json(updatedAccount);
-	  } else {
+		} else {
 			res.status(statusCodes.NOT_FOUND).send();
-	  }
+		}
 	} catch (error) {
-	  	next(error);
+		next(error);
 	}
 });
 
 // Atualiza a senha da conta do próprio usuário após validar a senha antiga e a confirmação
-userRouter.put("/account/updatepasswordAccount", validateEngineerRoute("ResetupdatePassword"), async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put("/account/updatepasswordAccount", authMiddleware, validateEngineerRoute("ResetupdatePassword"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
-	  	const { oldPassword, newPassword, confirmPassword } = req.body;
+		const { oldPassword, newPassword, confirmPassword } = req.body;
+		if (!req.user) {
+            return next(new LoginError("Usuário não autenticado."));
+        }
 		// @ts-ignore 
-	  	const updatedUser = await UserService.updatePasswordAccount(req.user.id, oldPassword, newPassword, confirmPassword);
+		const updatedUser = await UserService.updatePasswordAccount(req.user.userId, oldPassword, newPassword, confirmPassword);
 		if (updatedUser) {
 			res.status(statusCodes.SUCCESS).json({ message: "Senha redefinida com sucesso" });
-	 	} else {
+		} else {
 			res.status(statusCodes.NOT_FOUND).send();
-	  	}
+		}
 	} catch (error) {
-	 	 next(error);
+		next(error);
 	}
 });
 
 // Atualiza a foto de perfil do usuário
-userRouter.put("/account/updatephoto", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put("/account/updatephoto", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		if (!req.user) {
+            return next(new LoginError("Usuário não autenticado."));
+        }
 		// @ts-ignore 
-	  	const updatedUser = await UserService.updatePhotoAccount(req.user.id, req.file);
-	  	if (updatedUser) {
+		const updatedUser = await UserService.updatePhotoAccount(req.user.userId, req.file);
+		if (updatedUser) {
 			res.status(statusCodes.SUCCESS).json(updatedUser);
-	  	} else {
+		} else {
 			res.status(statusCodes.BAD_REQUEST).json("Erro ao salvar imagem em cache.");
-	  	}
+		}
 	} catch (error) {
-	  	next(error);
+		next(error);
 	}
 });
 
-  /*
-   * ===== Rotas Administrativas =====
-   */
-  
+/*
+ * ===== Rotas Administrativas =====
+ */
+
 // Retorna a lista de usuários de acordo com o cargo do solicitante
-userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const usersList = await UserService.readAllUsers(1/*req.user.id*/);
+		if (!req.user) {
+            return next(new LoginError("Usuário não autenticado."));
+        }
+		// @ts-ignore 
+		const usersList = await UserService.readAllUsers(req.user.userId);
 		if (usersList) {
 			res.status(statusCodes.SUCCESS).json(usersList);
 		} else {
@@ -102,20 +125,20 @@ userRouter.get("/", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Retorna os dados de um usuário específico (acesso para Administrador e Member)
-userRouter.get("/admin/member/read/:id", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.get("/admin/member/read/:id", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
-	  const userId = Number(req.params.id);
-	  const userData = await UserService.readUser(userId);
-	  res.status(statusCodes.SUCCESS).json(userData);
+		const userId = Number(req.params.id);
+		const userData = await UserService.readUser(userId);
+		res.status(statusCodes.SUCCESS).json(userData);
 	} catch (error) {
-	  const typedError = error as Error;
-	  res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
-	  next(error);
+		const typedError = error as Error;
+		res.status(statusCodes.NOT_FOUND).json({ error: typedError.message });
+		next(error);
 	}
-  });
-  
+});
+
 // Permite que o administrador atualize as informações de um usuário
-userRouter.put("/admin/update/:id", validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put("/admin/update/:id", authMiddleware, validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { id } = req.params;
 		const updateData = req.body;
@@ -127,9 +150,9 @@ userRouter.put("/admin/update/:id", validateEngineerRoute("update"), async (req:
 		next(error);
 	}
 });
-  
+
 // Permite que o administrador atualize a senha de um usuário
-userRouter.put("/admin/update/password/:id", validateEngineerRoute("updatePassword"), async (req: Request, res: Response, next: NextFunction) => {
+userRouter.put("/admin/update/password/:id", authMiddleware, validateEngineerRoute("updatePassword"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { id } = req.params;
 		const { password, confirmPassword } = req.body;
@@ -143,7 +166,7 @@ userRouter.put("/admin/update/password/:id", validateEngineerRoute("updatePasswo
 });
 
 // Permite que o administrador delete um usuário
-userRouter.delete("/admin/remove/:id", async (req: Request, res: Response, next: NextFunction) => {
+userRouter.delete("/admin/remove/:id", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { id } = req.params;
 		const deletedUser = await UserService.deleteUser(Number(id));

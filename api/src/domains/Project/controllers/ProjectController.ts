@@ -2,11 +2,14 @@ import { Router, Request, Response, NextFunction } from "express";
 import ProjectService from "../service/ProjectService";
 import { validateEngineerRoute } from "../../../middlewares/engineerValidator";
 import statusCodes from "../../../../utils/constants/statusCodes";
+import authMiddleware from "../../../middlewares/auth";
+import { LoginError } from "../../../../errors/LoginError";
 
 const ProjectRouter = Router();
 
-ProjectRouter.get("/", async (req: Request, res: Response, next:NextFunction) =>{
+ProjectRouter.get("/", authMiddleware, async (req: Request, res: Response, next:NextFunction) =>{
     try {
+        if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const read_projects = await ProjectService.read_allProjects();
         res.status(statusCodes.SUCCESS).json(read_projects);
     } catch (error) {
@@ -16,8 +19,9 @@ ProjectRouter.get("/", async (req: Request, res: Response, next:NextFunction) =>
     }
 })
 
-ProjectRouter.post("/create", validateEngineerRoute("createProject"), async (req: Request, res: Response, next: NextFunction) => {
+ProjectRouter.post("/create", authMiddleware, validateEngineerRoute("createProject"), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const createProject = await ProjectService.createProject(req.body);
         res.status(statusCodes.CREATED).json(createProject);
     } catch (error) {
@@ -27,9 +31,9 @@ ProjectRouter.post("/create", validateEngineerRoute("createProject"), async (req
     }
 })
 
-
-ProjectRouter.delete("/remove/:id", async (req: Request, res: Response, next: NextFunction) => {
+ProjectRouter.delete("/remove/:id", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const { id } = req.params;
         const project = await ProjectService.deleteProject(Number(id));
         res.status(statusCodes.SUCCESS).json({message: 'Projeto deletado com sucesso', project});
@@ -40,8 +44,9 @@ ProjectRouter.delete("/remove/:id", async (req: Request, res: Response, next: Ne
     }
 });
 
-ProjectRouter.put("/update/:id", validateEngineerRoute("updateProject"), async (req: Request, res: Response, next: NextFunction) => {
+ProjectRouter.put("/update/:id", authMiddleware, validateEngineerRoute("updateProject"), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const { id } = req.params;
         const updatedProject = await ProjectService.updateProject(Number(id), req.body);
         res.status(statusCodes.SUCCESS).json(updatedProject);
@@ -52,8 +57,9 @@ ProjectRouter.put("/update/:id", validateEngineerRoute("updateProject"), async (
     }
 });
 
-ProjectRouter.get("/read/:id", async (req: Request, res: Response, next: NextFunction) => {
+ProjectRouter.get("/read/:id", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const { id } = req.params;
         const project = await ProjectService.readById(Number(id));
         res.status(statusCodes.SUCCESS).json(project);
