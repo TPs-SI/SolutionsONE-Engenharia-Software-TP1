@@ -1,9 +1,9 @@
-import { Usuario } from "@prisma/client";
+import { JwtPayload } from "../src/domains/Auth/services/AuthService";
 
 declare global {
     namespace Express {
         interface Request {
-            user: User
+            user?: JwtPayload;
         }
     }
     namespace NodeJS{
@@ -11,6 +11,10 @@ declare global {
             DATABASE_URL : string,
             PORT : string,
             APP_URL : string,
+            SECRET_KEY: string;
+            JWT_EXPIRATION: string;
         }
     }
 }
+
+export {};

@@ -8,6 +8,7 @@ import { NotAuthorizedError } from "../../errors/NotAuthorizedError";
 import { InvalidRouteError } from "../../errors/InvalidRouteError";
 import { LoginError } from "../../errors/LoginError";
 import { PermissionError } from "../../errors/PermissionError";
+import { InternalServerError } from "../../errors/InternalServerError";
 
 function errorHandler(error: any, req:Request, res: Response, next: NextFunction){
     let message: string = error.message;
@@ -39,6 +40,10 @@ function errorHandler(error: any, req:Request, res: Response, next: NextFunction
 
     if (error instanceof QueryError) {
         status = statusCodes.BAD_REQUEST;
+    }
+
+    if (error instanceof InternalServerError) {
+        status = statusCodes.INTERNAL_SERVER_ERROR;
     }
 
     res.status(status).json({error: message});

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 
 import userRouter from "../src/domains/User/controllers/UserController";
 import projectRouter from "../src/domains/Project/controllers/ProjectController";
+import authRouter from "../src/domains/Auth/controllers/AuthController";
 
 dotenv.config();
 
@@ -25,6 +26,8 @@ app.use(express.urlencoded({
 // Aqui ficarão as rotas
 app.use("/api/users", userRouter);
 app.use("/api/projects", projectRouter);
+app.use("/api/auth", authRouter);
+
 app.use(errorHandler);
 
 export default app;
