@@ -52,7 +52,7 @@ const SpecificUser = () => {
   const deleteUser = async () => {
     if (!id) return;
     try {
-      await api.delete(`/users/${id}`);
+      await api.delete(`/users/admin/remove/${id}`);
       navigate("/users");
     } catch (error) {
       console.error("Erro ao excluir usuário:", error);
