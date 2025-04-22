@@ -12,6 +12,7 @@ import CreateUser from "../screens/CreateUser";
 import UsersList from "../screens/UsersList";
 import SpecificUser from "../screens/SpecificUser";
 import UpdateUser from "../screens/UpdateUser";
+import MyAccount from "../screens/myAccount";
 
 const pages: Route[] = [
     {
@@ -64,7 +65,12 @@ const pages: Route[] = [
     {
         link: "/update-user/:id",
         component: UpdateUser
+    },
+    {
+        link: "/my-account",
+        component: MyAccount
     }
+    
 ];
 
 export default pages;
