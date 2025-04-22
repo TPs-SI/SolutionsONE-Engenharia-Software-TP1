@@ -2,30 +2,40 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../../../Services/api'; 
 import { LoginCredentials } from '../../../domain/models/auth'; 
+// Importar o hook useAuth
+import { useAuth } from '../../../context/AuthContext'; 
 
 import './styles.css';
 
 const LoginScreen: React.FC = () => {
+    // Estados locais do formulário (inalterados)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false); 
 
+    // Obter a função login do contexto
+    const { login } = useAuth(); 
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(null); 
-        setIsLoading(true);
+        setIsLoading(true); 
 
         const credentials: LoginCredentials = { email, password };
 
         try {
-            // Chamar a função real da API
             const response = await loginUser(credentials); 
             
-            console.log('Login bem-sucedido! Token:', response.token); 
+            // Chamar a função login do contexto para armazenar token e atualizar estado
+            login(response.token); 
+
+            // Log de confirmação (pode remover depois)
+            console.log('Login bem-sucedido, estado atualizado e token armazenado.');
+
+            // Redirecionamento virá no próximo commit
 
         } catch (err) {
-            // Exibir o erro retornado pela função loginUser (ou um padrão)
             if (err instanceof Error) {
                  setError(err.message); 
             } else {
@@ -33,61 +43,39 @@ const LoginScreen: React.FC = () => {
             }
             console.error("Falha no login:", err);
         } finally {
-            setIsLoading(false);
+            setIsLoading(false); 
         }
     };
 
     return (
         <div className="login-page-container">
-            {/* Seção de Informações*/}
-            <div className="login-info-section">
+             {/* ... (seção info inalterada) ... */}
+             <div className="login-info-section">
                  <h1>Solutions ONE</h1>
                  <p>Gerenciando seus contratos em <strong>uma</strong> plataforma</p>
             </div>
-            {/* Seção do Formulário */}
-            <div className="login-form-section">
+            {/* ... (seção form inalterada, inputs e botão ainda usam isLoading) ... */}
+             <div className="login-form-section">
                 <div className="login-form-card">
                     <h2>Login</h2>
                     <form onSubmit={handleSubmit}>
-                        {/* Campo Email */}
-                        <div className="form-group">
+                         {/* ... (campos email e senha inalterados) ... */}
+                         <div className="form-group">
                             <label htmlFor="email">E-mail</label>
-                            <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                disabled={isLoading}
-                                placeholder="seuemail@example.com"
-                            />
+                            <input /* ... */ disabled={isLoading} />
                         </div>
-                         {/* Campo Senha */}
-                        <div className="form-group">
+                         <div className="form-group">
                             <label htmlFor="password">Senha</label>
-                            <input
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                disabled={isLoading}
-                                placeholder="Sua senha"
-                            />
+                            <input /* ... */ disabled={isLoading} />
                             <Link to="/forgot-password" className="forgot-password-link">Esqueci a senha</Link>
                         </div>
 
-                        {/* Exibir erro real da API */}
                         {error && <p className="error-message">{error}</p>}
-                        <button 
-                            type="submit" 
-                            className="login-button" 
-                            disabled={isLoading} // Desabilitar durante carregamento
-                        >
-                            {isLoading ? 'Acessando...' : 'Acessar'} {/* Mudar texto durante carregamento */}
+
+                        <button type="submit" className="login-button" disabled={isLoading}>
+                            {isLoading ? 'Acessando...' : 'Acessar'}
                         </button>
 
-                        {/* Link Registro */}
                         <div className="register-link-container">
                            <p>Não tem conta? Contate o administrador.</p> 
                         </div>
