@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import api from "../../Services/api";
+import api from "../../../Services/api";
 import "./Style/MinhaConta.css";
-import NavbarIcon from "../components/NavbarIcon";
+import NavbarIcon from "../../components/NavbarIcon";
 import { useNavigate } from "react-router-dom";
 
 interface IDadosUsuario {

@@ -8,6 +8,8 @@ import CreateProject from "../screens/CreateProject";
 import SpecificProject from "../screens/SpecificProject";
 import UpdateProject from "../screens/UpdateProject";
 
+import CreateUser from "../screens/CreateUser";
+
 const pages: Route[] = [
     {
         link: "/projects",
@@ -47,6 +49,10 @@ const pages: Route[] = [
     {
         link: "/update-project/:id",
         component: UpdateProject
+    },
+    {
+        link: "/create-user",
+        component: CreateUser
     }
 ];
 

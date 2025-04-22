@@ -39,7 +39,6 @@ export const createUser = async (userData: {
     password: string;
     cellphone: string;
     birth: string;
-    github: string;
     status: string | null;
     role: string | null;
 }) => {

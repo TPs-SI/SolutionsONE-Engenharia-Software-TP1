@@ -2,9 +2,9 @@
 // src/pages/Usuario.tsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getUserById, updateUser } from "../../Services/api";
+import { getUserById, updateUser } from "../../../Services/api";
 import "./Style/Usuario.css";
-import NavbarIcon from "../components/NavbarIcon";
+import NavbarIcon from "../../components/NavbarIcon";
 
 interface IUsuario {
   id: number;
