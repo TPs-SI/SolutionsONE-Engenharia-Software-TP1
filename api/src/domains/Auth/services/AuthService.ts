@@ -5,7 +5,7 @@ import jwt, { SignOptions } from "jsonwebtoken";
 import ms from "ms";
 import { LoginError } from "../../../../errors/LoginError";
 
-interface JwtPayload {
+export interface JwtPayload {
     userId: number;
     role: string | null;
 }
