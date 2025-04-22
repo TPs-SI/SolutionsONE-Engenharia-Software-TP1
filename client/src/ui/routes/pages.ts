@@ -10,6 +10,7 @@ import UpdateProject from "../screens/UpdateProject";
 
 import CreateUser from "../screens/CreateUser";
 import UsersList from "../screens/UsersList";
+import SpecificUser from "../screens/SpecificUser";
 
 const pages: Route[] = [
     {
@@ -54,6 +55,10 @@ const pages: Route[] = [
     {
         link: "/create-user",
         component: CreateUser
+    },
+    {
+        link: "/users/:id",
+        component: SpecificUser
     }
 ];
 
