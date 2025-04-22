@@ -9,6 +9,7 @@ import SpecificProject from "../screens/SpecificProject";
 import UpdateProject from "../screens/UpdateProject";
 
 import CreateUser from "../screens/CreateUser";
+import UsersList from "../screens/UsersList";
 
 const pages: Route[] = [
     {
@@ -22,7 +23,7 @@ const pages: Route[] = [
     },
     {
         link: "/users",
-        component: ProjectsList,
+        component: UsersList,
         menuConfig: {
             displayName: "Usuários",
             icon: faUsers,
