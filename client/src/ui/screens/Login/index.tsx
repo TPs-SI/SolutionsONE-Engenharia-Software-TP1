@@ -1,83 +1,100 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { loginUser } from '../../../Services/api'; 
-import { LoginCredentials } from '../../../domain/models/auth'; 
-// Importar o hook useAuth
-import { useAuth } from '../../../context/AuthContext'; 
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../../../Services/api';
+import { LoginCredentials } from '../../../domain/models/auth';
+import { useAuth } from '../../../context/AuthContext';
 
-import './styles.css';
-
+import './styles.css'; 
 const LoginScreen: React.FC = () => {
-    // Estados locais do formulário (inalterados)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false); 
+    const [isLoading, setIsLoading] = useState(false);
 
-    // Obter a função login do contexto
-    const { login } = useAuth(); 
+    const { login, isAuthenticated } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/projects');
+        }
+    }, [isAuthenticated, navigate]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setError(null); 
-        setIsLoading(true); 
-
+        setError(null);
+        setIsLoading(true);
         const credentials: LoginCredentials = { email, password };
 
         try {
-            const response = await loginUser(credentials); 
-            
-            // Chamar a função login do contexto para armazenar token e atualizar estado
-            login(response.token); 
-
-            // Log de confirmação (pode remover depois)
-            console.log('Login bem-sucedido, estado atualizado e token armazenado.');
-
-            // Redirecionamento virá no próximo commit
-
+            const response = await loginUser(credentials);
+            login(response.token);
         } catch (err) {
-            if (err instanceof Error) {
-                 setError(err.message); 
-            } else {
-                 setError("Ocorreu um erro inesperado.");
-            }
+            setError(err instanceof Error ? err.message : "Ocorreu um erro inesperado.");
             console.error("Falha no login:", err);
         } finally {
-            setIsLoading(false); 
+            setIsLoading(false);
         }
     };
 
+    if (isAuthenticated) {
+        return null; 
+    }
+
     return (
         <div className="login-page-container">
-             {/* ... (seção info inalterada) ... */}
-             <div className="login-info-section">
-                 <h1>Solutions ONE</h1>
-                 <p>Gerenciando seus contratos em <strong>uma</strong> plataforma</p>
+            {/* Seção Esquerda */}
+            <div className="login-info-section">
+                 {/* Aplicando estilo ao ONE e 'uma' */}
+                 <h1>Solutions <span className="solutions-one-highlight">ONE</span></h1>
+                 <p>Gerenciando seus contratos em <strong className="emphasis-yellow">uma</strong> plataforma</p>
             </div>
-            {/* ... (seção form inalterada, inputs e botão ainda usam isLoading) ... */}
-             <div className="login-form-section">
+
+            {/* Seção Direita */}
+            <div className="login-form-section">
                 <div className="login-form-card">
                     <h2>Login</h2>
                     <form onSubmit={handleSubmit}>
-                         {/* ... (campos email e senha inalterados) ... */}
-                         <div className="form-group">
+                        <div className="form-group">
+                            {/* Label pode ser opcional se o placeholder for suficiente */}
                             <label htmlFor="email">E-mail</label>
-                            <input /* ... */ disabled={isLoading} />
+                            <input
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                disabled={isLoading}
+                            />
                         </div>
-                         <div className="form-group">
+                        <div className="form-group">
                             <label htmlFor="password">Senha</label>
-                            <input /* ... */ disabled={isLoading} />
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                disabled={isLoading}
+                            />
+                             {/* Link agora usa classe para estilização */}
                             <Link to="/forgot-password" className="forgot-password-link">Esqueci a senha</Link>
                         </div>
 
                         {error && <p className="error-message">{error}</p>}
 
-                        <button type="submit" className="login-button" disabled={isLoading}>
+                        <button
+                            type="submit"
+                            className="login-button"
+                            disabled={isLoading}
+                        >
                             {isLoading ? 'Acessando...' : 'Acessar'}
                         </button>
 
+                         {/* Link de Registro atualizado */}
                         <div className="register-link-container">
-                           <p>Não tem conta? Contate o administrador.</p> 
+                           <Link to="#" className="register-link">Registre-se</Link>
+                           {/* Ou <a href="#" className="register-link">Registre-se</a> se preferir */}
                         </div>
                     </form>
                 </div>
