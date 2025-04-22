@@ -9,6 +9,12 @@ import SpecificProject from "../screens/SpecificProject";
 import UpdateProject from "../screens/UpdateProject";
 import LoginScreen from "../screens/Login"; 
 
+import CreateUser from "../screens/CreateUser";
+import UsersList from "../screens/UsersList";
+import SpecificUser from "../screens/SpecificUser";
+import UpdateUser from "../screens/UpdateUser";
+import MyAccount from "../screens/myAccount";
+
 const pages: Route[] = [
     {
         link: "/login", 
@@ -25,7 +31,7 @@ const pages: Route[] = [
     },
     {
         link: "/users",
-        component: ProjectsList,
+        component: UsersList,
         menuConfig: {
             displayName: "Usuários",
             icon: faUsers,
@@ -52,7 +58,24 @@ const pages: Route[] = [
     {
         link: "/update-project/:id",
         component: UpdateProject
+    },
+    {
+        link: "/create-user",
+        component: CreateUser
+    },
+    {
+        link: "/users/:id",
+        component: SpecificUser
+    },
+    {
+        link: "/update-user/:id",
+        component: UpdateUser
+    },
+    {
+        link: "/my-account",
+        component: MyAccount
     }
+    
 ];
 
 export default pages;

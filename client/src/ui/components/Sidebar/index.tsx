@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 import pages from "../../routes/pages";
@@ -42,12 +42,14 @@ const Sidebar = () => {
                 </div>
 
                 <div className="user-name">Júlia</div>
-                <div className="settings-icon">
-                    <FontAwesomeIcon icon={faCog}/>
-                </div>
+
+                {/* Ícone de configurações com link */}
+                <Link to="/my-account" className="settings-icon" title="Minha conta">
+                    <FontAwesomeIcon icon={faCog} />
+                </Link>
             </div>
         </div>
     );
-}
+};
 
 export default Sidebar;
