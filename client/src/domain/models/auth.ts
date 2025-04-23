@@ -10,7 +10,6 @@ export interface LoginResponse {
 }
 
 // Interface básica para dados do usuário (adapte conforme necessário)
-// Pode ser mais completa baseada no que a API realmente retorna
 export interface UserData {
     id: number;
     name: string;
