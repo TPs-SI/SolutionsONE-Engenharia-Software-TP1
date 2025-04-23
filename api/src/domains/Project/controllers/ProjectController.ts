@@ -9,6 +9,7 @@ const ProjectRouter = Router();
 
 ProjectRouter.get("/", authMiddleware, async (req: Request, res: Response, next:NextFunction) =>{
     try {
+        // @ts-ignore 
         if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const read_projects = await ProjectService.read_allProjects();
         res.status(statusCodes.SUCCESS).json(read_projects);
@@ -21,6 +22,7 @@ ProjectRouter.get("/", authMiddleware, async (req: Request, res: Response, next:
 
 ProjectRouter.post("/create", authMiddleware, validateEngineerRoute("createProject"), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // @ts-ignore 
         if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const createProject = await ProjectService.createProject(req.body);
         res.status(statusCodes.CREATED).json(createProject);
@@ -33,6 +35,7 @@ ProjectRouter.post("/create", authMiddleware, validateEngineerRoute("createProje
 
 ProjectRouter.delete("/remove/:id", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // @ts-ignore 
         if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const { id } = req.params;
         const project = await ProjectService.deleteProject(Number(id));
@@ -46,6 +49,7 @@ ProjectRouter.delete("/remove/:id", authMiddleware, async (req: Request, res: Re
 
 ProjectRouter.put("/update/:id", authMiddleware, validateEngineerRoute("updateProject"), async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // @ts-ignore 
         if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const { id } = req.params;
         const updatedProject = await ProjectService.updateProject(Number(id), req.body);
@@ -59,6 +63,7 @@ ProjectRouter.put("/update/:id", authMiddleware, validateEngineerRoute("updatePr
 
 ProjectRouter.get("/read/:id", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // @ts-ignore 
         if (!req.user) return next(new LoginError("Usuário não autenticado."));
         const { id } = req.params;
         const project = await ProjectService.readById(Number(id));

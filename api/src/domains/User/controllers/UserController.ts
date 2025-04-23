@@ -29,6 +29,7 @@ userRouter.post("/create", validateEngineerRoute("create"), async (req: Request,
 // Retorna os dados do próprio usuário
 userRouter.get("/account", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		// @ts-ignore 
 		if (!req.user) {
 			return next(new LoginError("Usuário não autenticado."));
 		}
@@ -46,7 +47,7 @@ userRouter.get("/account", authMiddleware, async (req: Request, res: Response, n
 userRouter.put("/account/updateAccount", authMiddleware, validateEngineerRoute("update"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const updateData = req.body;
-
+// @ts-ignore 
 		if (!req.user) {
 			return next(new LoginError("Usuário não autenticado."));
 		}
@@ -67,6 +68,7 @@ userRouter.put("/account/updateAccount", authMiddleware, validateEngineerRoute("
 userRouter.put("/account/updatepasswordAccount", authMiddleware, validateEngineerRoute("ResetupdatePassword"), async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { oldPassword, newPassword, confirmPassword } = req.body;
+		// @ts-ignore 
 		if (!req.user) {
             return next(new LoginError("Usuário não autenticado."));
         }
@@ -85,6 +87,7 @@ userRouter.put("/account/updatepasswordAccount", authMiddleware, validateEnginee
 // Atualiza a foto de perfil do usuário
 userRouter.put("/account/updatephoto", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		// @ts-ignore 
 		if (!req.user) {
             return next(new LoginError("Usuário não autenticado."));
         }
@@ -107,6 +110,7 @@ userRouter.put("/account/updatephoto", authMiddleware, async (req: Request, res:
 // Retorna a lista de usuários de acordo com o cargo do solicitante
 userRouter.get("/", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		// @ts-ignore 
 		if (!req.user) {
             return next(new LoginError("Usuário não autenticado."));
         }

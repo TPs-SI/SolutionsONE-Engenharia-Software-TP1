@@ -20,6 +20,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
 
     try {
         const decodedPayload = jwt.verify(token, secret) as JwtPayload;
+        // @ts-ignore 
         req.user = decodedPayload;
         next();
 
