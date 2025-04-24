@@ -28,19 +28,15 @@ userRouter.post("/create", validateEngineerRoute("create"), async (req: Request,
 
 // Retorna os dados do próprio usuário
 userRouter.get("/account", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		// @ts-ignore 
-		if (!req.user) {
-			return next(new LoginError("Usuário não autenticado."));
-		}
-
-		// @ts-ignore 
-		const userAccount = await UserService.readMyUser(req.user.userId);
-		res.status(statusCodes.SUCCESS).json(userAccount);
-	} catch (error) {
-		res.status(statusCodes.NOT_FOUND).json({ error: "Erro ao visualizar sua própria conta, tente novamente." });
-		next(error);
-	}
+    try {
+        if (!req.user) { 
+            return next(new LoginError("Usuário não autenticado.")); 
+        }
+        const userAccount = await UserService.readMyUser(req.user.userId); 
+        res.status(statusCodes.SUCCESS).json(userAccount);
+    } catch (error) {
+         next(error); 
+    }
 });
 
 // Atualiza os dados da conta do próprio usuário (exceto foto, senha, cargo e status)
