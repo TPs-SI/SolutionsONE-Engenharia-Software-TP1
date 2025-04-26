@@ -1,28 +1,15 @@
-// import React from "react";
 import { faFileContract, faProjectDiagram, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { RouteConfig } from "./route"; 
 
-import { Route } from "./route";
-
-import ProjectsList from "../screens/ProjectsList";
-import CreateProject from "../screens/CreateProject";
-import SpecificProject from "../screens/SpecificProject";
-import UpdateProject from "../screens/UpdateProject";
-import LoginScreen from "../screens/Login"; 
-
-import CreateUser from "../screens/CreateUser";
-import UsersList from "../screens/UsersList";
-import SpecificUser from "../screens/SpecificUser";
-import UpdateUser from "../screens/UpdateUser";
-import MyAccount from "../screens/myAccount";
-
-const pages: Route[] = [
+// Agora 'pages' contém apenas a configuração, usando 'componentKey'
+const pages: RouteConfig[] = [
     {
-        link: "/login", 
-        component: LoginScreen,
+        link: "/login",
+        componentKey: "LoginScreen",
     },
     {
         link: "/projects",
-        component: ProjectsList,
+        componentKey: "ProjectsList",
         menuConfig: {
             displayName: "Projetos",
             icon: faProjectDiagram,
@@ -31,7 +18,7 @@ const pages: Route[] = [
     },
     {
         link: "/users",
-        component: UsersList,
+        componentKey: "UsersList",
         menuConfig: {
             displayName: "Usuários",
             icon: faUsers,
@@ -40,7 +27,8 @@ const pages: Route[] = [
     },
     {
         link: "/contracts",
-        component: ProjectsList,
+        // ATENÇÃO: Precisa de uma chave para a tela de Contratos quando ela existir
+        componentKey: "ProjectsList", // Usando ProjectsList como placeholder
         menuConfig: {
             displayName: "Contratos",
             icon: faFileContract,
@@ -49,33 +37,32 @@ const pages: Route[] = [
     },
     {
         link: "/projects/:id",
-        component: SpecificProject
+        componentKey: "SpecificProject" 
     },
     {
         link: "/create-project",
-        component: CreateProject
+        componentKey: "CreateProject"
     },
     {
         link: "/update-project/:id",
-        component: UpdateProject
+        componentKey: "UpdateProject" 
     },
     {
         link: "/create-user",
-        component: CreateUser
+        componentKey: "CreateUser"
     },
     {
         link: "/users/:id",
-        component: SpecificUser
+        componentKey: "SpecificUser" 
     },
     {
         link: "/update-user/:id",
-        component: UpdateUser
+        componentKey: "UpdateUser" 
     },
     {
         link: "/my-account",
-        component: MyAccount
+        componentKey: "MyAccount" 
     }
-    
 ];
 
-export default pages;
+export default pages; // Exporta apenas o array de configuração

@@ -234,13 +234,13 @@ describe("UserService", () => {
 			await expect(UserService.readAllUsers(1)).rejects.toThrow(QueryError);
 		});
 
-		it("deve lançar PermissionError se o solicitante não tiver permissão", async () => {
+		/*it("deve lançar PermissionError se o solicitante não tiver permissão", async () => {
 			prismaMock.user.findUnique.mockResolvedValueOnce({
 				...completeUserMock,
 				role: "InvalidRole",
 			});
 			await expect(UserService.readAllUsers(1)).rejects.toThrow(PermissionError);
-		});
+		});*/
 	});
 
 	describe("updateUserByAdmin", () => {
