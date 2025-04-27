@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Sidebar from "../../components/Sidebar";
 import DefaultContainer from "../../components/DefaultContainer";
-import api from "../../../config/api";
+import api from "../../../Services/api";
 
 import "./styles.css";
 

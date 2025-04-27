@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import api from "../../../config/api";
+import api from "../../../Services/api";
 import { Project } from "../../../domain/models/project";
 
 import Sidebar from "../../components/Sidebar";
