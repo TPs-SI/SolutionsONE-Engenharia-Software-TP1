@@ -34,7 +34,7 @@ const UpdateMyAccount = () => {
       setUser(data);
     } catch (err) {
       alert("Erro ao carregar dados da conta.");
-      navigate("/");
+      navigate("/users");
     }
   };
 
@@ -54,7 +54,7 @@ const UpdateMyAccount = () => {
     try {
       await api.put(`/users/account/updateAccount`, payload);
       alert("Conta atualizada com sucesso.");
-      navigate("/");
+      navigate("/my-account");
     } catch (error) {
       alert("Erro ao atualizar conta.");
     }
