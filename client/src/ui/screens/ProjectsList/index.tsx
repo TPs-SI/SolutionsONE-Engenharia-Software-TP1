@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { Project } from "../../../domain/models/project";
 
-import api from "../../../config/api";
+import api from "../../../Services/api";
 
 import ListHeader from "../../components/ListHeader";
 

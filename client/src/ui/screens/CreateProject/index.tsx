@@ -9,12 +9,12 @@ import { Contract } from "../../../domain/models/contract";
 import { User } from "../../../domain/models/user";
 import { ProjectAssignment } from "../../../domain/models/project_assignment";
 
-import api from "../../../config/api";
 
 import Sidebar from "../../components/Sidebar";
 import DefaultContainer from "../../components/DefaultContainer";
 
 import "./styles.css";
+import api from "../../../Services/api";
 
 const CreateProject = () => {
     const navigate = useNavigate();
