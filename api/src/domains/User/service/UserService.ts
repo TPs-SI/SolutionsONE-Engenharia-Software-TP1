@@ -189,7 +189,7 @@ class UserService {
     return updatedUser;
   }
 
-  // Atualiza as informações da conta do próprio usuário, exceto foto, senha, cargo e status
+  // Atualiza as informações da conta do próprio usuário, exceto cargo e status
   async updateAccount(id: number, newInfo: Partial<User>) {
     const user = await prisma.user.findUnique({
       where: { id },
@@ -197,16 +197,6 @@ class UserService {
 
     if (!user) {
       throw new Error("Usuário não encontrado");
-    }
-
-    // Impede alteração da foto
-    if (newInfo.photo && newInfo.photo !== user.photo) {
-      throw new NotAuthorizedError("A foto não pode ser editada por aqui!");
-    }
-
-    // Impede alteração da senha por este método
-    if (newInfo.password && newInfo.password !== user.password) {
-      throw new Error("Não é permitido alterar a senha desta forma");
     }
 
     // Impede alteração do cargo

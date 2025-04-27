@@ -27,7 +27,8 @@ import CreateUser from "../screens/CreateUser";
 import UsersList from "../screens/UsersList";
 import SpecificUser from "../screens/SpecificUser";
 import UpdateUser from "../screens/UpdateUser";
-import MyAccount from "../screens/myAccount";
+import MyAccount from "../screens/MyAccount";
+import UpdateMyAccount from '../screens/UpdateMyAccount';
 
 export const screenComponentMap: Record<string, ScreenComponent> = {
     LoginScreen: LoginScreen,
@@ -41,5 +42,6 @@ export const screenComponentMap: Record<string, ScreenComponent> = {
     SpecificUser: SpecificUser,
     UpdateUser: UpdateUser,
     MyAccount: MyAccount,
+    UpdateMyAccount: UpdateMyAccount,
     // Adicione outros mapeamentos conforme necessário
 };
