@@ -6,7 +6,7 @@ import ms from "ms";
 import crypto from 'crypto'; // <-- Importar crypto
 import { LoginError } from "../../../../errors/LoginError";
 import { QueryError } from "../../../../errors/QueryError";
-// import { sendPasswordResetEmail } from "../../../utils/functions/sendEmail";
+import { sendPasswordResetEmail } from "../../../../utils/functions/sendEmail";
 
 export interface JwtPayload {
     userId: number;
