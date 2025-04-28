@@ -1,0 +1,151 @@
+/* Header específico para edição */
+.create-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: 60px;
+}
+
+.create-header h1 {
+    font-size: 1.8em;
+    color: #e6f1ff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.create-header h1 i {
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: #a8b2d1;
+}
+
+/* Seções do formulário */
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1d3158;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.section-title {
+    color: #64ffda;
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Campos do formulário */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #8892b0;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #0a192f;
+    border: 1px solid #1d3158;
+    border-radius: 6px;
+    color: #ccd6f6;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #64ffda;
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.3);
+}
+
+.form-group input::placeholder {
+    color: #8892b0;
+    opacity: 0.7;
+}
+
+/* Estilo de select dropdown */
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%238892b0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 35px;
+}
+
+/* Botões */
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-decoration: none;
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+.button i {
+    font-size: 0.9em;
+}
+
+.button-primary {
+    background-color: #facc15;
+    color: #111827;
+}
+
+.button-primary:hover {
+    background-color: #eab308;
+}
+
+.button-secondary {
+    background-color: #64ffda;
+    color: #111827;
+}
+
+.button-secondary:hover {
+    background-color: #52c4b8;
+}
+
+.button-remove {
+    background-color: #e11d48;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    flex-shrink: 0;
+}
+
+.button-remove:hover {
+    background-color: #be123c;
+}
+
+/* Alinhamento dos botões finais do formulário */
+.form-actions {
+    margin-top: 30px;
+    text-align: right;
+}
