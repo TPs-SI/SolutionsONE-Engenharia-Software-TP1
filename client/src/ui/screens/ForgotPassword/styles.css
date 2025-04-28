@@ -1,0 +1,45 @@
+/* 
+  IMPORTANTE: Crie este arquivo e COPIE/ADAPTE os estilos de 
+  Login/styles.css para manter a consistência visual. 
+  Use classes comuns como:
+  - .auth-page-container (para o fundo escuro)
+  - .auth-form-card (para o card branco)
+  - .auth-logo (para o "ONE" no topo)
+  - .auth-subtitle (para o texto abaixo do título)
+  - .form-group, label, input (estilos dos campos)
+  - .auth-button (estilo do botão principal)
+  - .auth-link-container, .auth-link (para o link "Voltar ao login")
+  - .error-message (para erros)
+  - Adicione uma classe .info-message para a mensagem de sucesso/informativa (talvez com cor verde ou cinza).
+*/
+
+.auth-logo {
+    color: var(--color-cyan); 
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px; 
+}
+
+.auth-subtitle {
+    font-size: 0.95rem;
+    color: #6c757d; 
+    margin-top: -15px; 
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.info-message { /* Estilo para a mensagem "Se o email estiver cadastrado..." */
+    color: #28a745; /* Verde para sucesso/info */
+     /* Ou um cinza: color: #6c757d; */
+    font-size: 0.85rem;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.auth-link {
+    color: var(--color-yellow);
+}
+
+/* Restante dos estilos adaptados de Login/styles.css */
+/* ... (copie e ajuste .auth-page-container, .auth-form-card, etc.) ... */
