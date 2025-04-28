@@ -45,27 +45,27 @@ const UsersList = () => {
                             .filter(user => user.name.toLowerCase().includes(searchQuery.toLowerCase()))
                             .map(user => (
                                 <ListItem
-                                  key={user.id}
-                                  title={user.name}
-                                  subtitle={
-                                    <>
-                                      <span>E-mail: {user.email}</span>
-                                      <br />
-                                      <span>Cargo: {user.role ?? "Não informado"}</span>
-                                    </>
-                                  }
-                                  link={`/users/${user.id}`}
+                                    key={user.id}
+                                    title={user.name}
+                                    subtitle={
+                                        <>
+                                            <span>E-mail: {user.email}</span>
+                                            <br />
+                                            <span>Cargo: {user.role ?? "Não informado"}</span>
+                                        </>
+                                    }
+                                    link={`/users/${user.id}`}
                                 />
 
 
-                        ))
+                            ))
                     }
                 </ListRenderer>
 
                 <FloatingLink text="Criar" link="/create-user" />
             </DefaultContainer>
         </>
-        
+
     );
 }
 
