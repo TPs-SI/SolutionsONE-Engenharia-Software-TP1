@@ -7,6 +7,8 @@ import crypto from 'crypto'; // <-- Importar crypto
 import { LoginError } from "../../../../errors/LoginError";
 import { QueryError } from "../../../../errors/QueryError";
 import { sendPasswordResetEmail } from "../../../../utils/functions/sendEmail";
+import { InvalidParamError } from "../../../../errors/InvalidParamError";
+import UserService from "../../User/service/UserService"; 
 
 export interface JwtPayload {
     userId: number;
@@ -151,6 +153,50 @@ class AuthService {
             // Poderíamos tentar reverter a atualização do DB aqui, mas é complexo.
             // É importante logar extensivamente.
             throw new Error("Falha ao processar a solicitação de recuperação.");
+        }
+    }
+
+    // --- NOVA FUNÇÃO: Reset Password ---
+    /**
+     * Valida o token de reset e atualiza a senha do usuário.
+     * @param rawToken - O token original recebido pelo usuário.
+     * @param newPassword - A nova senha desejada.
+     * @param confirmPassword - A confirmação da nova senha.
+     */
+    async resetPassword(rawToken: string, newPassword: string, confirmPassword: string): Promise<void> {
+        if (newPassword !== confirmPassword) {
+            throw new InvalidParamError("As senhas não coincidem.");
+        }
+
+        const hashedToken = hashResetToken(rawToken);
+        const user = await prisma.user.findFirst({
+            where: {
+                resetToken: hashedToken,
+                tokenExpires: { 
+                    gte: new Date()
+                }
+            }
+        });
+
+        if (!user) {
+            throw new InvalidParamError('Token inválido ou expirado.');
+        }
+
+        const encryptedPassword = await UserService.encryptPassword(newPassword);
+
+        try {
+            await prisma.user.update({
+                where: { id: user.id },
+                data: {
+                    password: encryptedPassword,
+                    resetToken: null,      
+                    tokenExpires: null,    
+                }
+            });
+            console.log(`Senha resetada com sucesso para o usuário ID: ${user.id}`);
+        } catch (dbError) {
+            console.error(`Erro ao atualizar senha e limpar token para usuário ID ${user.id}:`, dbError);
+            throw new Error("Falha ao atualizar a senha.");
         }
     }
 }
