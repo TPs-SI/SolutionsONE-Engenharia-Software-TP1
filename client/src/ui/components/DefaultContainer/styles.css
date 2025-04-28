@@ -1,5 +1,0 @@
-.default-container {
-    width: calc(60vw - 200px);
-    margin: 0 20vw 0 calc(200px + 20vw);
-    padding: 20px;
-}
