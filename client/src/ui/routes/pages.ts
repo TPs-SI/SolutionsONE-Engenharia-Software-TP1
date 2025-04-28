@@ -62,6 +62,10 @@ const pages: RouteConfig[] = [
     {
         link: "/my-account",
         componentKey: "MyAccount" 
+    },
+    {
+        link: "/update-account",
+        componentKey: "UpdateMyAccount" 
     }
 ];
 

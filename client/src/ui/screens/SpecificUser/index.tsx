@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./styles.css";
-
 
 import Sidebar from "../../components/Sidebar";
 import DefaultContainer from "../../components/DefaultContainer";
@@ -29,6 +27,8 @@ const SpecificUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const DEFAULT_PHOTO = "https://img.freepik.com/vetores-premium/ilustracao-em-vetor-de-icone-de-perfil-de-usuario-masculino-padrao_276184-168.jpg?w=900";
+
   useEffect(() => {
     if (!id || isNaN(Number(id))) {
       setError("ID inválido.");
@@ -40,9 +40,7 @@ const SpecificUser = () => {
 
   const loadUser = async (userId: number) => {
     try {
-      const { data } = await api.get<User>(
-        `/users/admin/member/read/${userId}`
-      );
+      const { data } = await api.get<User>(`/users/admin/member/read/${userId}`);
       setUser(data);
     } catch (err) {
       setError("Usuário não encontrado.");
@@ -93,7 +91,7 @@ const SpecificUser = () => {
         <section className="project-details">
           <h2>Informações do Usuário</h2>
           <img
-            src={user?.photo}
+            src={user?.photo || DEFAULT_PHOTO}
             alt={`Foto de ${user?.name}`}
             className="user-photo"
           />
@@ -122,3 +120,4 @@ const SpecificUser = () => {
 };
 
 export default SpecificUser;
+  

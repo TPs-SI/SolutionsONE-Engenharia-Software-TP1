@@ -23,6 +23,8 @@ const MyAccount = () => {
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
+  const DEFAULT_PHOTO = "https://img.freepik.com/vetores-premium/ilustracao-em-vetor-de-icone-de-perfil-de-usuario-masculino-padrao_276184-168.jpg?w=900";
+
   useEffect(() => {
     loadMyAccount();
   }, []);
@@ -43,7 +45,7 @@ const MyAccount = () => {
         {user && (
           <div className="account-container">
             <img
-              src={user.photo}
+              src={user.photo || DEFAULT_PHOTO}
               alt={`Foto de ${user.name}`}
               className="account-photo"
             />
