@@ -34,10 +34,31 @@ class AuthController {
             next(error);
         }
     }
+
+    async handleResetPassword(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { token } = req.params; 
+            const { newPassword, confirmPassword } = req.body;
+
+            if (!token) {
+                return res.status(statusCodes.BAD_REQUEST).json({ error: "Token não fornecido na URL." });
+            }
+            if (!newPassword || !confirmPassword) {
+                return res.status(statusCodes.BAD_REQUEST).json({ error: "Nova senha e confirmação são obrigatórias." });
+            }
+            await AuthService.resetPassword(token, newPassword, confirmPassword);
+
+            res.status(statusCodes.SUCCESS).json({ message: "Senha redefinida com sucesso." });
+
+        } catch (error) {
+             next(error);
+        }
+    }
 }
 
 const controller = new AuthController();
 authRouter.post("/login", controller.handleLogin);
 authRouter.post("/forgot-password", controller.handleForgotPassword);
+authRouter.post("/reset-password/:token", controller.handleResetPassword); 
 
 export default authRouter;
