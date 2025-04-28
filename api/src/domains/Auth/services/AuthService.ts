@@ -97,50 +97,59 @@ class AuthService {
     * @param email - Email do usuário solicitante.
     */
     async createPasswordResetToken(email: string): Promise<void> {
+        // 1. Encontrar usuário pelo email
         const user = await prisma.user.findUnique({
             where: { email },
         });
 
-        // IMPORTANTE: Mesmo que o usuário não exista, NÃO retorne um erro
-        // dizendo "usuário não encontrado". Isso vaza informação se um email
-        // está cadastrado ou não. Apenas retorne (ou logue) sem fazer nada.
+        // 2. Silenciosamente retornar se o usuário não for encontrado (segurança)
         if (!user) {
-            console.log(`Solicitação de reset para email não encontrado: ${email}`);
-            return;
+            console.log(`Solicitação de reset para email não encontrado: ${email}. Nenhuma ação tomada.`);
+            // Retorna sem erro para o controller, que enviará a msg genérica.
+            return; 
         }
 
+        // 3. Gerar o token RAW (para o email)
         const rawToken = crypto.randomBytes(32).toString('hex'); 
-        const hashedToken = hashResetToken(rawToken);
-        const expires = new Date();
-        expires.setHours(expires.getHours() + 1);
 
+        // 4. Gerar o HASH do token (para o DB)
+        const hashedToken = hashResetToken(rawToken);
+
+        // 5. Definir a data de expiração (1 hora a partir de agora)
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 1); 
+
+        // 6. Tentar salvar o HASH e a data de expiração no usuário
         try {
             await prisma.user.update({
                 where: { email: email },
                 data: {
-                    resetToken: hashedToken,
+                    resetToken: hashedToken, // Salva o HASH
                     tokenExpires: expires,
                 },
             });
+            console.log(`Token de reset (hash) salvo para ${email}`);
         } catch (dbError) {
-            console.error(`Erro ao salvar token de reset para ${email}:`, dbError);
-            throw new Error("Falha ao processar a solicitação de recuperação.");
+            // Log detalhado do erro do banco de dados
+            console.error(`Erro ao salvar token de reset no DB para ${email}:`, dbError);
+            // Lança erro genérico para ser pego pelo controller/errorHandler
+            throw new Error("Falha ao processar a solicitação de recuperação."); 
         }
 
+        // 7. Tentar enviar o email com o token RAW
         try {
             await sendPasswordResetEmail({
                 email: user.email,
-                token: rawToken, 
+                token: rawToken, // Envia o token ORIGINAL
                 userName: user.name,
             });
             console.log(`Email de reset enviado para ${email}`);
         } catch (emailError) {
-            // O que fazer se o email falhar? O token já foi salvo.
-            // Idealmente, logar o erro extensivamente. Pode-se tentar reverter
-            // a atualização do DB ou apenas informar um erro genérico.
+            // Log detalhado do erro de email
             console.error(`Falha crítica ao enviar email de reset para ${email} após salvar token.`, emailError);
-            // Lançar erro genérico para o usuário. A falha no envio não deve
-            // impedir que o processo pareça ter funcionado do ponto de vista de segurança.
+            // Lança erro genérico. O token está no DB, mas o usuário não o recebeu.
+            // Poderíamos tentar reverter a atualização do DB aqui, mas é complexo.
+            // É importante logar extensivamente.
             throw new Error("Falha ao processar a solicitação de recuperação.");
         }
     }
