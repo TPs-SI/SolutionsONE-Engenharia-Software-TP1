@@ -1,1 +1,1 @@
-# Create and populate SQL tables here
+-- Create and populate SQL tables here
