@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import { requestPasswordReset } from '../../../Services/api';
-// import { ForgotPasswordDTO } from '../../../domain/models/auth';
+import { requestPasswordReset } from '../../../Services/api';
+import { ForgotPasswordDTO } from '../../../domain/models/auth';
 
 import './styles.css'; 
 
@@ -17,16 +17,16 @@ const ForgotPasswordScreen: React.FC = () => {
         setMessage(null); 
         setIsLoading(true);
 
-        // const payload: ForgotPasswordDTO = { email };
+        const payload: ForgotPasswordDTO = { email }; 
 
-        console.log('Solicitando reset para:', email);
         try {
-             await new Promise(resolve => setTimeout(resolve, 1000));
-             setMessage("Se o email estiver cadastrado, um link de recuperação será enviado.");
+             const response = await requestPasswordReset(payload); 
+             
+             setMessage(response.message);
 
         } catch (err) {
              setError(err instanceof Error ? err.message : "Ocorreu um erro.");
-             console.error("Erro na solicitação:", err);
+             console.error("Erro na solicitação de recuperação:", err);
         } finally {
             setIsLoading(false);
         }
@@ -36,7 +36,7 @@ const ForgotPasswordScreen: React.FC = () => {
         <div className="auth-page-container"> 
             <div className="auth-form-card">
                 <div className="auth-logo">ONE</div> 
-                
+            
                 <h2>Esqueci a senha</h2>
                 <p className="auth-subtitle">
                     Insira seu endereço de e-mail e enviaremos um código para redefinir sua senha.
