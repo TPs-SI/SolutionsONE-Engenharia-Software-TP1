@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom'; 
-// Importar a função da API (será usada depois)
-// import { resetPassword } from '../../../Services/api';
-// import { ResetPasswordDTO } from '../../../domain/models/auth';
+import { resetPassword } from '../../../Services/api';
+import { ResetPasswordDTO } from '../../../domain/models/auth';
 
 import './styles.css'; 
 
@@ -22,7 +21,6 @@ const NewPasswordScreen: React.FC = () => {
         }
     }, [token]); 
 
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError(null);
@@ -38,16 +36,19 @@ const NewPasswordScreen: React.FC = () => {
         }
         
         setIsLoading(true);
-
-        console.log('Tentando resetar senha com token:', token); 
+        
+        const payload: ResetPasswordDTO = { newPassword: password, confirmPassword }; 
 
          try {
-             await new Promise(resolve => setTimeout(resolve, 1000)); 
-             setMessage("Senha redefinida com sucesso!"); 
+             const response = await resetPassword(token, payload); 
+
+             setMessage(response.message);
+             setPassword('');
+             setConfirmPassword('');
 
          } catch (err) {
              setError(err instanceof Error ? err.message : "Ocorreu um erro.");
-             console.error("Erro ao resetar senha:", err);
+             console.error("Erro ao criar nova senha:", err);
          } finally {
              setIsLoading(false);
          }
