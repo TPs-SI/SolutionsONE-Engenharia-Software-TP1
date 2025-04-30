@@ -1,0 +1,83 @@
+.account-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #e6f1ff;
+    margin-top: 40px;
+  }
+  
+  .create-header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #e6f1ff;
+  }
+  
+  .create-header h1 {
+    font-size: 2em;
+  }
+  
+  .form-section {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 30px;
+  }
+  
+  .section-title {
+    font-size: 1.4em;
+    color: #ccd6f6;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #233554;
+    padding-bottom: 5px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    margin-bottom: 8px;
+    color: #a8b2d1;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    background-color: #1e293b;
+    color: #e2e8f0;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #facc15;
+    background-color: #0f172a;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .button.button-primary {
+    background-color: #facc15;
+    color: #111827;
+    padding: 10px 20px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button.button-primary:hover {
+    background-color: #eab308;
+  }
+  
+  .button svg {
+    margin-right: 8px;
+  }
+  
