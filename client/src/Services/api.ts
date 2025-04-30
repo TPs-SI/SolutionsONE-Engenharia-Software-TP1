@@ -1,4 +1,4 @@
-import axios, { InternalAxiosRequestConfig } from "axios"; 
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios"; 
 import { 
     LoginCredentials, LoginResponse, UserData,  ForgotPasswordDTO, ResetPasswordDTO, SuccessMessageResponse } from "../domain/models/auth";
 
@@ -102,17 +102,24 @@ export const requestPasswordReset = async (payload: ForgotPasswordDTO): Promise<
  */
 export const resetPassword = async (token: string, payload: ResetPasswordDTO): Promise<SuccessMessageResponse> => {
     try {
-        // Envia POST para /auth/reset-password/SEU_TOKEN_AQUI
         const response = await api.post<SuccessMessageResponse>(`/auth/reset-password/${token}`, payload);
-        return response.data;
+        return response.data; 
     } catch (error) {
         console.error("Erro ao redefinir senha:", error);
-        if (axios.isAxiosError(error) && (error.response?.status === 400 || error.response?.status === 401)) {
-            const apiErrorMessage = error.response?.data?.error;
-            throw new Error(apiErrorMessage || "Token inválido ou expirado.");
-        }
-        if (axios.isAxiosError(error) && error.response?.status === 400 && error.response?.data?.error === "As senhas não coincidem."){
-             throw new Error("As senhas não coincidem.");
+
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<any>;
+            const status = axiosError.response?.status;
+            const responseData = axiosError.response?.data;
+
+            if (status === 400 && responseData && Array.isArray(responseData.errors) && responseData.errors.length > 0) {
+                const validationErrorMessage = responseData.errors[0].msg; 
+                throw new Error(validationErrorMessage || "Erro de validação nos dados enviados."); 
+            } 
+            else if (status === 400 || status === 401) {
+                const apiErrorMessage = responseData?.error; 
+                throw new Error(apiErrorMessage || "Token inválido ou expirado, ou as senhas não coincidem.");
+            }
         }
         throw new Error("Erro ao tentar redefinir a senha.");
     }

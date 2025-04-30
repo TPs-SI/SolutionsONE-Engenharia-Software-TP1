@@ -1,5 +1,6 @@
 import { body, validationResult, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
+import statusCodes from "../../utils/constants/statusCodes";
 
 /* ============================ */
 /*        Express Regex         */
@@ -286,7 +287,7 @@ export function validateEngineerRoute(route: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     if (!validations || validations.length === 0) {
       return next();
-  }
+    }
 
     for (const validation of validations) {
       await validation.run(req);
@@ -298,6 +299,6 @@ export function validateEngineerRoute(route: string) {
       return next();
     }
 
-    res.status(400).json(errors.array());
+    return res.status(statusCodes.BAD_REQUEST).json({ errors: errors.array() });
   };
 }
