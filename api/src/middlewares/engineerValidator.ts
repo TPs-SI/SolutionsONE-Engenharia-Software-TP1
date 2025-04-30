@@ -99,36 +99,36 @@ function birthValidation(optional = true): ValidationChain {
 function nameProjectValidationUpdate(optional = true): ValidationChain {
   let validator = body("name");
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-      .isString()
-      .withMessage("Insira um nome para o projeto, que deve estar em formato de string!")
+    .isString()
+    .withMessage("Insira um nome para o projeto, que deve estar em formato de string!")
 }
 
 function contractProjectValidationUpdate(optional = true): ValidationChain {
   let validator = body("contractId");
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-  .custom((value) => {
+    .custom((value) => {
       if (!Number.isInteger(value) || value <= 0) {
-          throw new Error("Insira um id de contrato, que deve ser um número inteiro positivo!");
+        throw new Error("Insira um id de contrato, que deve ser um número inteiro positivo!");
       }
       return true;
-  });
+    });
 
 }
 
 function projectDateValidationUpdate(optional = true): ValidationChain {
   let validator = body("date");
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-      .matches(dateRegex)
-      .withMessage("Data da venda deve estar no formato DD/MM/YYYY ou nula!")
+    .matches(dateRegex)
+    .withMessage("Data da venda deve estar no formato DD/MM/YYYY ou nula!")
 }
 
 
@@ -136,102 +136,102 @@ function projectDateValidationUpdate(optional = true): ValidationChain {
 function projectFunctionValidationUpdate(optional = true): ValidationChain {
   let validator = body('team')
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-      .isArray({ min: 1 })
-      .withMessage('O array de equipe deve conter pelo menos um item.')
-      .custom((team) => {
-          for (const userProject of team) {
-              if (typeof userProject.function !== 'string' || !userProject.function.trim()) {
-                  throw new Error('A função deve estar em formato de string e não pode estar vazia.');
-              }
-          }
-          return true;
-      });
+    .isArray({ min: 1 })
+    .withMessage('O array de equipe deve conter pelo menos um item.')
+    .custom((team) => {
+      for (const userProject of team) {
+        if (typeof userProject.function !== 'string' || !userProject.function.trim()) {
+          throw new Error('A função deve estar em formato de string e não pode estar vazia.');
+        }
+      }
+      return true;
+    });
 }
 
 // Validação para o campo "userId" dentro do array "team"
 function userIdProjectValidationUpdate(optional = true): ValidationChain {
   let validator = body('team')
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-      .isArray({ min: 1 })
-      .withMessage('O array de equipe deve conter pelo menos um item.')
-      .custom((team) => {
-          for (const userProject of team) {
-              if (!Number.isInteger(userProject.userId) || userProject.userId <= 0) {
-                  throw new Error('Seu ID deve ser um número inteiro positivo.');
-              }
-          }
-          return true;
-      });
+    .isArray({ min: 1 })
+    .withMessage('O array de equipe deve conter pelo menos um item.')
+    .custom((team) => {
+      for (const userProject of team) {
+        if (!Number.isInteger(userProject.userId) || userProject.userId <= 0) {
+          throw new Error('Seu ID deve ser um número inteiro positivo.');
+        }
+      }
+      return true;
+    });
 }
 
 function nameProjectValidation(optional = false): ValidationChain {
   let validator = body("name");
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-      .isString()
-      .withMessage("Insira um nome para o projeto, que deve estar em formato de string!")
+    .isString()
+    .withMessage("Insira um nome para o projeto, que deve estar em formato de string!")
 }
 
 function contractProjectValidation(optional = false): ValidationChain {
   let validator = body("contractId");
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-  .custom((value) => {
+    .custom((value) => {
       if (!Number.isInteger(value) || value <= 0) {
-          throw new Error("Insira um id de contrato, que deve ser um número inteiro positivo!");
+        throw new Error("Insira um id de contrato, que deve ser um número inteiro positivo!");
       }
       return true;
-  });
+    });
 
 }
 
 function projectDateValidation(optional = true): ValidationChain {
   let validator = body("date");
   if (optional) {
-      validator = validator.optional({ checkFalsy: true });
+    validator = validator.optional({ checkFalsy: true });
   }
   return validator
-      .matches(dateRegex)
-      .withMessage("Data da venda deve estar no formato DD/MM/YYYY ou nulo")
+    .matches(dateRegex)
+    .withMessage("Data da venda deve estar no formato DD/MM/YYYY ou nulo")
 }
 
 function projectFunctionValidation(): ValidationChain {
   return body('team')
-      .isArray({ min: 1 })
-      .withMessage('O array de equipe deve conter pelo menos um item.')
-      .custom((team) => {
-          for (const userProject of team) {
-              if (typeof userProject.function !== 'string' || !userProject.function.trim()) {
-                  throw new Error('A função deve estar em formato de string e não pode estar vazia.');
-              }
-          }
-          return true;
-      });
+    .isArray({ min: 1 })
+    .withMessage('O array de equipe deve conter pelo menos um item.')
+    .custom((team) => {
+      for (const userProject of team) {
+        if (typeof userProject.function !== 'string' || !userProject.function.trim()) {
+          throw new Error('A função deve estar em formato de string e não pode estar vazia.');
+        }
+      }
+      return true;
+    });
 }
 
 // Validação para o campo "userId" dentro do array "team"
 function userIdProjectValidation(): ValidationChain {
   return body('team')
-      .isArray({ min: 1 })
-      .withMessage('O array de equipe deve conter pelo menos um item.')
-      .custom((team) => {
-          for (const userProject of team) {
-              if (!Number.isInteger(userProject.userId) || userProject.userId <= 0) {
-                  throw new Error('Seu ID deve ser um número inteiro positivo.');
-              }
-          }
-          return true;
-      });
+    .isArray({ min: 1 })
+    .withMessage('O array de equipe deve conter pelo menos um item.')
+    .custom((team) => {
+      for (const userProject of team) {
+        if (!Number.isInteger(userProject.userId) || userProject.userId <= 0) {
+          throw new Error('Seu ID deve ser um número inteiro positivo.');
+        }
+      }
+      return true;
+    });
 }
 
 /* ============================ */
@@ -240,22 +240,22 @@ function userIdProjectValidation(): ValidationChain {
 
 // Função que retorna as validações de acordo com a rota solicitada
 function getEngineerValidations(route: string) {
-	switch (route) {
-		case "create":
-			return [
-			emailValidation(),
-			nameValidation(),
-			passwordValidation(),
-			cellphoneValidation(),
-			birthValidation(),
-			];
-		case "update":
-			return [
-			emailValidation(),
-			nameValidation(),
-			cellphoneValidation(),
-			birthValidation(),
-    ];
+  switch (route) {
+    case "create":
+      return [
+        emailValidation(),
+        nameValidation(),
+        passwordValidation(),
+        cellphoneValidation(),
+        birthValidation(),
+      ];
+    case "update":
+      return [
+        emailValidation(),
+        nameValidation(),
+        cellphoneValidation(),
+        birthValidation(),
+      ];
     case 'createProject':
       return [
         projectDateValidation(),
@@ -263,39 +263,41 @@ function getEngineerValidations(route: string) {
         nameProjectValidation(),
         projectFunctionValidation(),
         userIdProjectValidation(),
-    ];
+      ];
     case 'updateProject':
-      return[
+      return [
         projectDateValidationUpdate(),
         contractProjectValidationUpdate(),
         nameProjectValidationUpdate(),
         projectFunctionValidationUpdate(),
         userIdProjectValidationUpdate(),
-      ]
-		default:
-			return [];
-		}
-	}
+      ];
+    case "resetPassword":
+      return [resetPasswordValidation()];
+    default:
+      return [];
+  }
+}
 
 // Middleware que executa as validações para a rota do engenheiro
 export function validateEngineerRoute(route: string) {
-	const validations = getEngineerValidations(route);
+  const validations = getEngineerValidations(route);
 
-	return async (req: Request, res: Response, next: NextFunction) => {
-		if (!validations) {
-			return next();
-	}
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!validations || validations.length === 0) {
+      return next();
+  }
 
-		for (const validation of validations) {
-			await validation.run(req);
-		}
+    for (const validation of validations) {
+      await validation.run(req);
+    }
 
-			const errors = validationResult(req);
+    const errors = validationResult(req);
 
-		if (errors.isEmpty()) {
-			return next();
-		}
+    if (errors.isEmpty()) {
+      return next();
+    }
 
-		res.status(400).json(errors.array());
-	};
+    res.status(400).json(errors.array());
+  };
 }

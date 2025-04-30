@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import AuthService from "../services/AuthService";
 import statusCodes from "../../../../utils/constants/statusCodes";
 import { InvalidParamError } from "../../../../errors/InvalidParamError"; 
+import { validateEngineerRoute } from "../../../middlewares/engineerValidator"; 
 
 const authRouter = Router();
 
@@ -60,5 +61,11 @@ const controller = new AuthController();
 authRouter.post("/login", controller.handleLogin);
 authRouter.post("/forgot-password", controller.handleForgotPassword);
 authRouter.post("/reset-password/:token", controller.handleResetPassword); 
+
+authRouter.post(
+    "/reset-password/:token",
+    validateEngineerRoute("resetPassword"),
+    controller.handleResetPassword
+);
 
 export default authRouter;
