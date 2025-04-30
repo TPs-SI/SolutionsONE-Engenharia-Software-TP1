@@ -5,4 +5,5 @@ export interface Contract {
     value: number;
     date: string;
     archivePath: string;
+    client?: string; // se for opcional 
 }

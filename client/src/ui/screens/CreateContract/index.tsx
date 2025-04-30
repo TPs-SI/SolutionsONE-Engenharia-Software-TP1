@@ -24,12 +24,15 @@ const CreateContract = () => {
     const [contracts, setContracts] = useState<Contract[]>([]);
 
     // Form data
-    const [projectName, setProjectName] = useState<string>("");
     const [contractId, setContractId] = useState<number>(0);
     const [date, setDate] = useState<string>("");
     const [teamMembers, setTeamMembers] = useState<ProjectAssignment[]>([]);
     const [currentFunction, setCurrentFunction] = useState<string>("");
     const [userId, setUserId] = useState<number>(0);
+    const [projectName, setProjectName] = useState<string>("");
+    const [clientName, setClientName] = useState<string>("");
+    const [contractValue, setContractValue] = useState<number>(0);
+
 
     useEffect(() => {
         loadUsers();
@@ -125,8 +128,11 @@ const CreateContract = () => {
             name: projectName,
             contractId,
             date,
-            team: teamMembers
+            team: teamMembers,
+            client: clientName,
+            value: contractValue,
         };
+        
 
         try {
             const response = await api.post<Project>("/projects/create", request);
@@ -156,17 +162,17 @@ const CreateContract = () => {
                         <div className="form-group">
                             <label htmlFor="name">Título</label>
                             <input type="text" id="name" name="name" placeholder="Digite o título do contrato" required onChange={e => setProjectName(e.target.value)} />
-                        </div>
+                            </div>
 
                         <div className="form-group">
                             <label htmlFor="contractId">Valor</label>
-                                <input type="text" id="name" name="name" placeholder="Digite o valor do contrato" required onChange={e => setProjectName(e.target.value)}/>
-                        </div>
+                            <input type="number" id="value" name="value" placeholder="Digite o valor do contrato" required onChange={e => setContractValue(Number(e.target.value))} />
+                            </div>
 
                         
                         <div className="form-group">
                             <label htmlFor="date">Cliente</label>
-                            <input type="text" id="name" name="name" placeholder="Digite o nome do cliente" required onChange={e => setProjectName(e.target.value)}/>
+                            <input type="text" id="client" name="client" placeholder="Digite o nome do cliente" required onChange={e => setClientName(e.target.value)} />
                             </div>
 
                             <div className="form-group">

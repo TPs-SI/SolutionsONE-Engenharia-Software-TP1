@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { Project } from "../../../domain/models/project";
+import { Contract } from "../../../domain/models/contract";
 
 import api from "../../../Services/api";
 
 import ListHeader from "../../components/ListHeader";
-
 import ListRenderer from "../../components/ListRenderer";
 import ListItem from "../../components/ListItem";
 import Sidebar from "../../components/Sidebar";
@@ -14,18 +13,16 @@ import FloatingLink from "../../components/FloatingLink";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 
 const ContractsList = () => {
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [contracts, setContracts] = useState<Contract[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
-        loadAllProjects();
+        loadAllContracts();
     }, []);
 
-    const loadAllProjects = async () => {
-        const { data: projects } = await api.get<Project[]>("/projects");
-
-
-        setProjects(projects);
+    const loadAllContracts = async () => {
+        const { data: contracts } = await api.get<Contract[]>("/contracts");
+        setContracts(contracts);
     }
 
     return (
@@ -41,14 +38,14 @@ const ContractsList = () => {
 
                 <ListRenderer>
                     {
-                        projects
-                            .filter(project => project.name.toLowerCase().includes(searchQuery.toLowerCase()))
-                            .map(project => (
+                        contracts
+                            .filter(contract => contract.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                            .map(contract => (
                                 <ListItem
-                                    key={project.id}
-                                    title={project.name}
-                                    subtitle={`Entrega: ${project.date}`}
-                                    link={`/projects/${project.id}`}
+                                    key={contract.id}
+                                    title={contract.title}
+                                    subtitle={`Cliente: ${contract.nameClient} - Entrega: ${contract.date}`}
+                                    link={`/contracts/${contract.id}`}
                                 />
                         ))
                     }
@@ -57,7 +54,6 @@ const ContractsList = () => {
                 <FloatingLink text="Criar" link="/create-contract" />
             </DefaultContainer>
         </>
-        
     );
 }
 
