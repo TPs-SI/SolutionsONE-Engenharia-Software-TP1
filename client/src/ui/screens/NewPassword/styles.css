@@ -1,23 +1,19 @@
 /* 
   IMPORTANTE: Crie este arquivo e COPIE/ADAPTE os estilos de 
   Login/styles.css ou ForgotPassword/styles.css para manter a consistência visual. 
-  Use classes comuns como:
-  - .auth-page-container, .auth-form-card, .auth-logo, .auth-subtitle
-  - .form-group, label, input
-  - .auth-button
-  - .error-message
-  - Adicione uma classe .success-message (similar a .info-message talvez)
+  Use classes comuns (auth-page-container, auth-form-card, auth-logo, etc.).
+  Adicione a classe .success-message se ainda não existir.
 */
 
-/* Exemplo de estilos adicionais/adaptados */
-.success-message { /* Estilo para a mensagem "Senha redefinida..." */
-    color: #28a745; /* Verde */
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    text-align: center;
+.success-message { 
+  color: #28a745; 
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
-/* Restante dos estilos adaptados de Login/ForgotPassword */
-/* ... */
+.success-container .auth-link-container {
+  margin-top: 0; 
+}

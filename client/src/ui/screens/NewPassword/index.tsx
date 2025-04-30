@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom'; 
-import { resetPassword } from '../../../Services/api';
-import { ResetPasswordDTO } from '../../../domain/models/auth';
-
-import './styles.css'; 
+import { resetPassword } from '../../../Services/api'; 
+import { ResetPasswordDTO } from '../../../domain/models/auth'; 
+import './styles.css';
 
 const NewPasswordScreen: React.FC = () => {
     const [password, setPassword] = useState('');
@@ -11,12 +10,10 @@ const NewPasswordScreen: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null); 
     const [isLoading, setIsLoading] = useState(false);
-
     const { token } = useParams<{ token: string }>(); 
 
     useEffect(() => {
         if (!token) {
-            console.error("Token não encontrado na URL.");
             setError("Link de redefinição inválido ou ausente.");
         }
     }, [token]); 
@@ -25,30 +22,20 @@ const NewPasswordScreen: React.FC = () => {
         event.preventDefault();
         setError(null);
         setMessage(null);
-
-        if (!token) {
-             setError("Link de redefinição inválido ou ausente.");
-             return;
-        }
-        if (password !== confirmPassword) {
-            setError("As senhas não coincidem.");
-            return;
-        }
+        if (!token) { /* ... */ return; }
+        if (password !== confirmPassword) { /* ... */ return; }
         
         setIsLoading(true);
-        
         const payload: ResetPasswordDTO = { newPassword: password, confirmPassword }; 
 
          try {
              const response = await resetPassword(token, payload); 
-
-             setMessage(response.message);
+             setMessage(response.message); 
              setPassword('');
              setConfirmPassword('');
-
          } catch (err) {
              setError(err instanceof Error ? err.message : "Ocorreu um erro.");
-             console.error("Erro ao criar nova senha:", err);
+             console.error("Erro ao resetar senha:", err);
          } finally {
              setIsLoading(false);
          }
@@ -97,7 +84,7 @@ const NewPasswordScreen: React.FC = () => {
                                     className="auth-button" 
                                     disabled={isLoading}
                                 >
-                                    {isLoading ? 'Salvando...' : 'Salvar Senha'} 
+                                    {isLoading ? 'Salvando...' : 'Acessar'} 
                                 </button>
                             )}
                         </form>
@@ -115,7 +102,7 @@ const NewPasswordScreen: React.FC = () => {
 
                  {!token && !message && (
                       <div className="auth-link-container">
-                        <p className='error-message'>{error}</p> 
+                        <p className='error-message'>{error || "Link inválido."}</p> 
                         <Link to="/login" className="auth-link">Voltar ao login</Link>
                      </div>
                  )}
