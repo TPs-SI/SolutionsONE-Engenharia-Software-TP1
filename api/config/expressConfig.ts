@@ -27,7 +27,7 @@ app.use(express.urlencoded({
 app.use("/api/users", userRouter);
 app.use("/api/projects", projectRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/contarcts", contractRouter);
+app.use("/api/contracts", contractRouter);
 app.use(errorHandler);
 
 export default app;
