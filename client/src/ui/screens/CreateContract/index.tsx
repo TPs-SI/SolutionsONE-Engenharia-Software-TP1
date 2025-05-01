@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; // useEffect pode não ser mais necessário
+import { useState } from "react"; // useEffect pode não ser mais necessário
 import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -85,7 +85,7 @@ const CreateContract = () => {
         try {
             // Chamar endpoint de criação de Contrato
             // Ajuste o endpoint ('/contracts') conforme necessário
-            const response = await api.post<Contract>("/contracts", request);
+            const response = await api.post<Contract>("/contracts/create", request);
             const contractId = response.data.id; // Assumindo que a resposta contém o contrato criado com ID
 
             console.log("Contract created successfully:", response.data);
@@ -172,14 +172,7 @@ const CreateContract = () => {
                         <div className="form-group">
                             <label htmlFor="date">Data de Assinatura</label>
                             {/* Usar type="date" para melhor UX */}
-                            <input
-                                type="date"
-                                id="date"
-                                name="date"
-                                required
-                                value={date} // Controlar o componente
-                                onChange={e => setDate(e.target.value)}
-                            />
+                            <input type="text" id="date" name="date" pattern="\d{2}-\d{2}-\d{4}" placeholder="Ex: 23/07/2016" required onChange={e => setDate(e.target.value)} />
                             {/* Placeholder não funciona com type="date" na maioria dos browsers modernos */}
                             {/* O formato esperado pela API pode precisar de ajuste */}
                         </div>
