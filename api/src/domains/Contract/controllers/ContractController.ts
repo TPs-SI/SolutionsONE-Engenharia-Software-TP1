@@ -1,7 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import ContractService from "../service/ContractService";
 import statusCodes from "../../../../utils/constants/statusCodes";
-import { downloadContract } from "../../../middlewares/multerContract";
 import { validateEngineerRoute } from "../../../middlewares/engineerValidator";
 import authMiddleware from "../../../middlewares/auth";
 
@@ -63,16 +62,5 @@ ContractRouter.get("/", authMiddleware,async (req: Request, res: Response, next:
         res.status(statusCodes.NOT_FOUND).json({ error: typedError.message});
         next (error);
     }
-});
-
-ContractRouter.get("/download/:id", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const id = req.params.id;
-        
-		await downloadContract(Number(id), res);
-        res.status(statusCodes.SUCCESS).json("Arquivo de contrato baixado com sucesso!");
-	} catch (error) {
-		next(error); 
-	}
 });
 export default ContractRouter;
