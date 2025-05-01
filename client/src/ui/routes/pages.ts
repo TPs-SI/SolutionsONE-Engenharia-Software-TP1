@@ -68,6 +68,14 @@ const pages: RouteConfig[] = [
         componentKey: "CreateContract"
     },
     {
+        link: "/contracts/:id",
+        componentKey: "SpecificContract"
+    },
+    {
+        link: "/update-contract/:id",
+        componentKey: "UpdateContract"
+    },
+    {
         link: "/update-account",
         componentKey: "UpdateMyAccount" 
     }
