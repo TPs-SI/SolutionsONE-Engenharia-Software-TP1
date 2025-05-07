@@ -28,7 +28,7 @@ const pages: RouteConfig[] = [
     {
         link: "/contracts",
         // ATENÇÃO: Precisa de uma chave para a tela de Contratos quando ela existir
-        componentKey: "ProjectsList", // Usando ProjectsList como placeholder
+        componentKey: "ContractsList", // Usando ProjectsList como placeholder
         menuConfig: {
             displayName: "Contratos",
             icon: faFileContract,
@@ -62,6 +62,18 @@ const pages: RouteConfig[] = [
     {
         link: "/my-account",
         componentKey: "MyAccount" 
+    },
+    {
+        link: "/create-contract",
+        componentKey: "CreateContract"
+    },
+    {
+        link: "/contracts/:id",
+        componentKey: "SpecificContract"
+    },
+    {
+        link: "/update-contract/:id",
+        componentKey: "UpdateContract"
     },
     {
         link: "/update-account",
