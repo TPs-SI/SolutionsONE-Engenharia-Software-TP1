@@ -17,3 +17,17 @@ export interface UserData {
     role?: string | null;
     // Adicione outros campos retornados pela API que você usa
 }
+
+export interface ForgotPasswordDTO {
+    email: string;
+}
+
+export interface ResetPasswordDTO {
+    newPassword: string;
+    confirmPassword: string;
+    // O token virá pela URL, não pelo corpo geralmente
+}
+
+export interface SuccessMessageResponse {
+    message: string;
+}

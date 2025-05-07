@@ -1,5 +1,6 @@
-import axios, { InternalAxiosRequestConfig } from "axios"; 
-import { LoginCredentials, LoginResponse, UserData } from "../domain/models/auth";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios"; 
+import { 
+    LoginCredentials, LoginResponse, UserData,  ForgotPasswordDTO, ResetPasswordDTO, SuccessMessageResponse } from "../domain/models/auth";
 
 const api = axios.create({
     baseURL: "http://localhost:3030/api",
@@ -74,6 +75,54 @@ export const loginUser = async (credentials: LoginCredentials): Promise<LoginRes
       }
       throw new Error("Erro ao tentar fazer login.");
   }
+};
+
+
+/**
+ * Envia solicitação para gerar token de recuperação de senha.
+ * @param payload - Objeto contendo o email do usuário.
+ * @returns Promise com a mensagem de sucesso genérica da API.
+ */
+export const requestPasswordReset = async (payload: ForgotPasswordDTO): Promise<SuccessMessageResponse> => {
+    try {
+        // Esta rota não precisa de token de autenticação
+        const response = await api.post<SuccessMessageResponse>("/auth/forgot-password", payload);
+        return response.data; 
+    } catch (error) {
+        console.error("Erro ao solicitar recuperação de senha:", error);
+        throw new Error("Erro ao processar a solicitação.");
+    }
+};
+
+/**
+ * Envia o token de reset e a nova senha para a API.
+ * @param token - O token recebido por email (geralmente da URL).
+ * @param payload - Objeto contendo a nova senha e a confirmação.
+ * @returns Promise com a mensagem de sucesso da API.
+ */
+export const resetPassword = async (token: string, payload: ResetPasswordDTO): Promise<SuccessMessageResponse> => {
+    try {
+        const response = await api.post<SuccessMessageResponse>(`/auth/reset-password/${token}`, payload);
+        return response.data; 
+    } catch (error) {
+        console.error("Erro ao redefinir senha:", error);
+
+        if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<any>;
+            const status = axiosError.response?.status;
+            const responseData = axiosError.response?.data;
+
+            if (status === 400 && responseData && Array.isArray(responseData.errors) && responseData.errors.length > 0) {
+                const validationErrorMessage = responseData.errors[0].msg; 
+                throw new Error(validationErrorMessage || "Erro de validação nos dados enviados."); 
+            } 
+            else if (status === 400 || status === 401) {
+                const apiErrorMessage = responseData?.error; 
+                throw new Error(apiErrorMessage || "Token inválido ou expirado, ou as senhas não coincidem.");
+            }
+        }
+        throw new Error("Erro ao tentar redefinir a senha.");
+    }
 };
 
 export default api; 

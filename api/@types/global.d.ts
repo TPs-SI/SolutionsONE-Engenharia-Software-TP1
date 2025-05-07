@@ -13,6 +13,10 @@ declare global {
             APP_URL : string,
             SECRET_KEY: string;
             JWT_EXPIRATION: string;
+            HOST_NODEMAILER : string;
+            PORT_NODEMAILER : string;
+            EMAIL_ACCOUNT : string;
+            EMAIL_PASSWORD : string;
         }
     }
 }

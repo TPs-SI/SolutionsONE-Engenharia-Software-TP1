@@ -1,0 +1,138 @@
+/* 
+  IMPORTANTE: Este arquivo DEVE ser atualizado.
+  BASEIE-SE fortemente no 'Login/styles.css' que já foi ajustado para o Figma.
+  Certifique-se de que as classes usadas no JSX acima (.auth-page-container, 
+  .auth-form-card, .auth-logo, h2, .auth-subtitle, .form-group, label, input,
+  .auth-button, .auth-link-container, .auth-link, .error-message, .info-message)
+  tenham estilos consistentes com o design (cores, fontes, espaçamentos, bordas).
+  
+  Reutilize as variáveis CSS (--color-dark-blue, --color-cyan, --color-yellow, etc.).
+*/
+
+:root { 
+    --color-dark-blue: #0a192f;
+    --color-cyan: #64ffda;
+    --color-yellow: #facc15;
+}
+
+.auth-page-container {
+   display: flex;
+   min-height: 100vh;
+   background-color: var(--color-dark-blue);
+   justify-content: center;
+   align-items: center;
+   padding: 20px;
+}
+
+.auth-form-card {
+   background-color: var(--color-white);
+   color: var(--color-dark-text);
+   padding: 40px 50px;
+   border-radius: 8px;
+   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+   width: 100%;
+   max-width: 450px; 
+   text-align: center;
+}
+
+.auth-logo {
+    color: var(--color-cyan);
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.auth-form-card h2 {
+    margin-bottom: 15px; 
+    color: var(--color-dark-text);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.auth-subtitle {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 12px;
+    border: 1px solid var(--color-input-border);
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-cyan); 
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.2); 
+}
+
+.auth-button {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--color-cyan);
+    color: var(--color-dark-text);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.auth-button:hover {
+     background-color: #52d8c7; 
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.auth-button:disabled { 
+    background-color: #a0f0e0; 
+    cursor: not-allowed;
+}
+
+.auth-link-container {
+    margin-top: 30px;
+    font-size: 0.9rem;
+}
+
+.auth-link {
+     color: var(--color-yellow);
+     text-decoration: none;
+     font-weight: bold;
+}
+.auth-link:hover {
+     text-decoration: underline;
+}
+
+.error-message {
+    color: var(--color-error);
+    font-size: 0.85rem;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.info-message { 
+    color: #28a745; 
+    font-size: 0.9rem;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 500;
+}
