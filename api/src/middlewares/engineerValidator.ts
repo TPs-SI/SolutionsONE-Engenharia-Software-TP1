@@ -1,5 +1,6 @@
 import { body, validationResult, ValidationChain } from "express-validator";
 import { Request, Response, NextFunction } from "express";
+import statusCodes from "../../utils/constants/statusCodes";
 
 /* ============================ */
 /*        Express Regex         */
@@ -155,6 +156,7 @@ function nameProjectValidationUpdate(optional = true): ValidationChain {
   return validator
   .isString()
   .withMessage("Insira um nome para o projeto, que deve estar em formato de string!")
+
 }
 
 function contractProjectValidationUpdate(optional = true): ValidationChain {
@@ -180,6 +182,7 @@ function projectDateValidationUpdate(optional = true): ValidationChain {
   return validator
   .matches(dateRegex)
   .withMessage("Data da venda deve estar no formato DD/MM/YYYY ou nula!")
+
 }
 
 
@@ -229,6 +232,7 @@ function nameProjectValidation(optional = false): ValidationChain {
   return validator
   .isString()
   .withMessage("Insira um nome para o projeto, que deve estar em formato de string!")
+
 }
 
 function contractProjectValidation(optional = false): ValidationChain {
@@ -244,6 +248,7 @@ function contractProjectValidation(optional = false): ValidationChain {
     return true;
   });
   
+
 }
 
 function projectDateValidation(optional = true): ValidationChain {
@@ -254,6 +259,7 @@ function projectDateValidation(optional = true): ValidationChain {
   return validator
   .matches(dateRegex)
   .withMessage("Data da venda deve estar no formato DD/MM/YYYY ou nulo")
+
 }
 
 function projectFunctionValidation(): ValidationChain {
@@ -268,6 +274,7 @@ function projectFunctionValidation(): ValidationChain {
     }
     return true;
   });
+
 }
 
 // Validação para o campo "userId" dentro do array "team"
@@ -283,6 +290,7 @@ function userIdProjectValidation(): ValidationChain {
     }
     return true;
   });
+
 }
 
 /* ============================ */
@@ -341,28 +349,31 @@ function getEngineerValidations(route: string) {
     ]
     default:
     return [];
+
   }
 }
 
 // Middleware que executa as validações para a rota do engenheiro
 export function validateEngineerRoute(route: string) {
   const validations = getEngineerValidations(route);
-  
+
+
   return async (req: Request, res: Response, next: NextFunction) => {
-    if (!validations) {
+    if (!validations || validations.length === 0) {
       return next();
     }
-    
+
     for (const validation of validations) {
       await validation.run(req);
     }
-    
+
     const errors = validationResult(req);
-    
+
     if (errors.isEmpty()) {
       return next();
     }
-    
-    res.status(400).json(errors.array());
+
+    return res.status(statusCodes.BAD_REQUEST).json({ errors: errors.array() });
+
   };
 }
