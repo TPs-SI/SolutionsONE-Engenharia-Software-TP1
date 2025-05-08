@@ -1,40 +1,55 @@
+import React from 'react'; // Adicionar import do React se ainda não tiver
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./ui/routes/ProtectedRoute";
+import pageConfigs from "./ui/routes/pages"; 
+import { screenComponentMap, ScreenComponent } from "./ui/routes/route"; 
 
-// Importar componentes diretamente
 import LoginScreen from "./ui/screens/Login";
 import ForgotPasswordScreen from "./ui/screens/ForgotPassword"; 
 import NewPasswordScreen from "./ui/screens/NewPassword";  
-import ProjectsList from "./ui/screens/ProjectsList";
-import CreateProject from "./ui/screens/CreateProject";
-import SpecificProject from "./ui/screens/SpecificProject";
-import UpdateProject from "./ui/screens/UpdateProject";
+import ProjectsList from "./ui/screens/ProjectsList"; 
+
 
 function App() {
   return (
     <AuthProvider>
-      <div>
-        <BrowserRouter>
-          <Routes>
-            {/* --- Rotas Públicas --- */}
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
-            <Route path="/new-password/:token" element={<NewPasswordScreen />} />
+      <BrowserRouter>
+        <Routes>
+          {/* --- Rotas Públicas --- */}
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
+          <Route path="/new-password/:token" element={<NewPasswordScreen />} />
+          
+          {/* --- Rotas Protegidas (Geradas Dinamicamente) --- */}
+          <Route element={<ProtectedRoute />}>
+            {/* Rota raiz padrão se autenticado */}
+            <Route path="/" element={<ProjectsList />} /> 
             
-            {/* --- Rotas Protegidas --- */}
-            <Route element={<ProtectedRoute />}>
-              {/* Mapear rotas protegidas diretamente */}
-              <Route path="/" element={<ProjectsList />} /> 
-              <Route path="/projects" element={<ProjectsList />} />
-              <Route path="/projects/:id" element={<SpecificProject />} />
-              <Route path="/create-project" element={<CreateProject />} />
-              <Route path="/update-project/:id" element={<UpdateProject />} />
-            </Route>
-            
-          </Routes>
-        </BrowserRouter>
-      </div>
+            {
+              pageConfigs
+                .filter(page => 
+                  // Filtra rotas que são públicas ou não têm componente mapeado
+                  page.link !== '/login' && 
+                  page.link !== '/forgot-password' && 
+                  !page.link.startsWith('/new-password/') &&
+                  screenComponentMap[page.componentKey] // Garante que o componente exista no mapa
+                )
+                .map((page) => {
+                  const ComponentToRender = screenComponentMap[page.componentKey] as ScreenComponent; 
+                  return (
+                    <Route 
+                      key={page.link} 
+                      path={page.link} 
+                      element={<ComponentToRender />} 
+                    />
+                  );
+                })
+            }
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   );
 }
