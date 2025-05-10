@@ -1,14 +1,14 @@
 import crypto from "crypto";
 import bcrypt from "bcrypt";
-
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import prisma from "../../../../config/prismaClient";
 import { selectItems, selectItems2 } from "./excludeAttributes";
-
 import { InvalidParamError } from "../../../../errors/InvalidParamError";
 import { NotAuthorizedError } from "../../../../errors/NotAuthorizedError";
 import { PermissionError } from "../../../../errors/PermissionError";
 import { QueryError } from "../../../../errors/QueryError";
+import { UserRole } from "../types/UserRole";
+import { JwtPayload } from "../../Auth/services/AuthService";
 
 // Cargos e status válidos
 const VALID_ROLES = ["Manager", "Administrator", "Member"];
@@ -33,14 +33,9 @@ class UserService {
       throw new QueryError("Esse email já está cadastrado.");
     }
 
-    // Impede que o próprio usuário defina seu cargo ou status
-    if (userData.role != null) {
-      throw new NotAuthorizedError("Não é possível inserir o próprio cargo.");
-    }
-
-    if (userData.status != null) {
-      throw new NotAuthorizedError("Não é possível inserir o próprio status.");
-    }
+    const roleToSet = userData.role && VALID_ROLES.includes(userData.role as UserRole)
+      ? userData.role as UserRole
+      : UserRole.MEMBER;
 
     if (userData.password != null) {
       const encryptedPassword = await this.encryptPassword(userData.password);
@@ -55,7 +50,7 @@ class UserService {
           cellphone: userData.cellphone,
           birth: userData.birth,
           status: "Pending",
-          role: null,
+          role: roleToSet,
           resetToken: null,
           tokenExpires: null,
         },
@@ -95,143 +90,75 @@ class UserService {
   }
 
   // Retorna todos os usuários de acordo com o cargo do solicitante
-  async readAllUsers(requesterId: number) {
-    const requesterAccount = await prisma.user.findUnique({
-      where: { id: requesterId },
-    });
-
-    if (true) { // requesterAccount?.role === "Administrator" || requesterAccount?.role === "Manager"
+  async readAllUsers(requester: JwtPayload) {
+    if (requester.role === UserRole.ADMIN || requester.role === UserRole.MANAGER) {
       const users = await prisma.user.findMany({
         orderBy: { name: "asc" },
         select: selectItems,
       });
-
-      if (users && users.length > 0) {
-        return users;
-      } else {
-        throw new QueryError("A lista de usuários está vazia.");
-      }
-    } else if (requesterAccount?.role === "Member") {
-      const activeUsers = await prisma.user.findMany({
-        where: { status: "Active" },
-        select: selectItems,
-      });
-
-      if (activeUsers && activeUsers.length > 0) {
-        return activeUsers;
-      } else {
-        throw new QueryError("Nenhum usuário está ativo");
-      }
+      return users;
     } else {
-      throw new PermissionError("Você não tem o cargo necessário para visualizar os usuários");
+      throw new PermissionError("Você não tem permissão para listar todos os usuários.");
     }
   }
 
   // Permite que o administrador atualize as informações de um usuário
   async updateUserByAdmin(id: number, updateData: Partial<User>) {
-    // Verifica se o usuário existe
-    const existingUser = await prisma.user.findUnique({
-      where: { id },
-    });
+    const existingUser = await prisma.user.findUnique({ where: { id } });
+    if (!existingUser) { throw new Error("Usuário não encontrado."); }
 
-    if (!existingUser) {
-      throw new Error("Usuário não encontrado.");
+    if (updateData.role !== undefined && updateData.role !== null && !VALID_ROLES.includes(updateData.role as UserRole)) {
+      throw new InvalidParamError("Cargo inválido");
+    }
+    if (updateData.status !== undefined && updateData.status !== null && !VALID_STATUS.includes(updateData.status)) {
+      throw new InvalidParamError("Status inválido");
+    }
+    if (updateData.password) {
+      throw new NotAuthorizedError("Para alterar a senha de um usuário, use a rota específica de administrador.");
     }
 
-    // Valida o cargo se fornecido
-    if (updateData.role !== undefined && updateData.role !== null) {
-      if (!VALID_ROLES.includes(updateData.role)) {
-        throw new Error("Cargo inválido");
-      }
-    }
+    const dataToUpdate: Prisma.UserUpdateInput = {
+      name: updateData.name,
+      email: updateData.email,
+      cellphone: updateData.cellphone,
+      birth: updateData.birth,
+      role: updateData.role as UserRole,
+      status: updateData.status,
+      photo: updateData.photo,
+    };
 
-    // Valida o status se fornecido
-    if (updateData.status !== undefined && updateData.status !== null) {
-      if (!VALID_STATUS.includes(updateData.status)) {
-        throw new Error("Status inválido");
-      }
-    }
-
-    // Impede alteração da foto
-    if (updateData.photo && updateData.photo !== existingUser.photo) {
-      throw new Error("Você não tem permissão para alterar a foto deste usuário");
-    }
-
-    // Impede alteração da senha
-    if (updateData.password && updateData.password !== existingUser.password) {
-      throw new Error("Você não tem permissão para mudar a senha deste usuário.");
-    }
-
-    // Verifica se o novo email já está cadastrado por outro usuário
-    if (updateData.email !== undefined && updateData.email !== null) {
-      const userWithEmail = await prisma.user.findUnique({
-        where: { email: updateData.email },
-      });
-      if (userWithEmail && userWithEmail.id !== id) {
-        throw new Error("Email já cadastrado");
-      }
-    }
-
-    // Atualiza os dados do usuário
     const updatedUser = await prisma.user.update({
-      data: {
-        email: updateData.email,
-        name: updateData.name,
-        cellphone: updateData.cellphone,
-        birth: updateData.birth,
-        status: updateData.status,
-        role: updateData.role,
-      },
       where: { id },
+      data: dataToUpdate,
       select: selectItems,
     });
-
     return updatedUser;
   }
 
   // Atualiza as informações da conta do próprio usuário, exceto cargo e status
-  async updateAccount(id: number, newInfo: Partial<User>) {
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
+  async updateAccount(id: number, newInfo: Partial<Omit<User, 'role' | 'status' | 'password'>>): Promise<Partial<User>> {
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) { throw new Error("Usuário não encontrado"); }
 
-    if (!user) {
-      throw new Error("Usuário não encontrado");
-    }
-
-    // Impede alteração do cargo
-    if (newInfo.role && newInfo.role !== user.role) {
-      throw new NotAuthorizedError("Não é possível editar o próprio cargo.");
-    }
-
-    // Impede alteração do status
-    if (newInfo.status && newInfo.status !== user.status) {
-      throw new NotAuthorizedError("Não é possível editar o próprio status.");
-    }
-
-    // Verifica se o novo email já está cadastrado por outro usuário
-    if (newInfo.email !== undefined && newInfo.email !== null) {
-      const userByEmail = await prisma.user.findUnique({
-        where: { email: newInfo.email },
-      });
-
-      if (userByEmail && userByEmail.email !== user.email) {
-        throw new Error("Email já cadastrado");
+    // Validações para email, se necessário (já existente)
+    if (newInfo.email && newInfo.email !== user.email) {
+      const emailExists = await prisma.user.findUnique({ where: { email: newInfo.email } });
+      if (emailExists && emailExists.id !== id) {
+        throw new QueryError("Este email já está em uso por outra conta.");
       }
     }
 
-    // Atualiza os dados permitidos do usuário
     const updatedUser = await prisma.user.update({
+      where: { id },
       data: {
         name: newInfo.name,
         birth: newInfo.birth,
         email: newInfo.email,
         cellphone: newInfo.cellphone,
+        // photo: newInfo.photo, // Se updatePhotoAccount for separado
       },
-      where: { id },
       select: selectItems,
     });
-
     return updatedUser;
   }
 
@@ -242,35 +169,21 @@ class UserService {
     newPassword: string,
     confirmPassword: string
   ) {
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) { throw new Error("Usuário não encontrado"); }
+    if (!user.password) { throw new NotAuthorizedError("Usuário não possui senha cadastrada para alteração."); }
 
-    if (!user) {
-      throw new Error("Usuário não encontrado");
-    }
-
-    // Valida a senha antiga
-    if (user.password != null) {
-      if (!bcrypt.compareSync(oldPassword, user.password)) {
-        throw new Error("A senha antiga digitada está errada, tente novamente!");
-      }
-    }
-
-    // Verifica se a nova senha coincide com a confirmação
-    if (newPassword !== confirmPassword) {
-      throw new Error("As senhas não são iguais.");
-    }
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) { throw new InvalidParamError("A senha antiga está incorreta."); }
+    if (newPassword !== confirmPassword) { throw new InvalidParamError("As novas senhas não coincidem."); }
 
     // Criptografa a nova senha
     const encryptedPassword = await this.encryptPassword(newPassword);
 
     // Atualiza a senha no banco de dados (atenção: a atualização não utiliza await)
-    const updatedUser = prisma.user.update({
-      data: {
-        password: encryptedPassword,
-      },
+    const updatedUser = await prisma.user.update({
       where: { id },
+      data: { password: encryptedPassword },
     });
 
     return updatedUser;
@@ -280,20 +193,14 @@ class UserService {
   async updatePassword(id: number, password: string, confirmPassword: string) {
     // Verifica se o usuário existe
     const userExists = await prisma.user.findUnique({ where: { id } });
-    if (!userExists) {
-      throw new Error("Usuário não encontrado");
-    }
-
-    // Verifica se as senhas coincidem
-    if (password !== confirmPassword) {
-      throw new Error("As senhas não coincidem.");
-    }
+    if (!userExists) { throw new Error("Usuário não encontrado"); }
+    if (password !== confirmPassword) { throw new InvalidParamError("As senhas não coincidem."); }
 
     // Criptografa a senha e atualiza o usuário
     const encryptedPassword = await this.encryptPassword(password);
     await prisma.user.update({
-      data: { password: encryptedPassword },
       where: { id },
+      data: { password: encryptedPassword },
     });
     return password;
   }
@@ -326,18 +233,13 @@ class UserService {
   // Deleta um usuário a partir do ID
   async deleteUser(id: number) {
     // Verifica se o usuário existe
-    const existingUser = await prisma.user.findUnique({
-      where: { id },
-    });
-
-    if (!existingUser) {
-      throw new InvalidParamError("Usuário não encontrado");
-    }
+    const existingUser = await prisma.user.findUnique({ where: { id } });
+    if (!existingUser) { throw new InvalidParamError("Usuário não encontrado"); }
 
     // Deleta o usuário
-    const deletedUser = await prisma.user.delete({
-      where: { id },
-    });
+    await prisma.usersProjects.deleteMany({ where: { userId: id } });
+
+    await prisma.user.delete({ where: { id } });
     return existingUser;
   }
 }

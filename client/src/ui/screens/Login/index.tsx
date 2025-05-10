@@ -5,6 +5,7 @@ import { LoginCredentials } from '../../../domain/models/auth';
 import { useAuth } from '../../../context/AuthContext';
 
 import './styles.css'; 
+
 const LoginScreen: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -16,7 +17,7 @@ const LoginScreen: React.FC = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/projects');
+            navigate('/projects'); 
         }
     }, [isAuthenticated, navigate]);
 
@@ -43,20 +44,16 @@ const LoginScreen: React.FC = () => {
 
     return (
         <div className="login-page-container">
-            {/* Seção Esquerda */}
             <div className="login-info-section">
-                 {/* Aplicando estilo ao ONE e 'uma' */}
                  <h1>Solutions <span className="solutions-one-highlight">ONE</span></h1>
                  <p>Gerenciando seus contratos em <strong className="emphasis-yellow">uma</strong> plataforma</p>
             </div>
 
-            {/* Seção Direita */}
             <div className="login-form-section">
                 <div className="login-form-card">
                     <h2>Login</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            {/* Label pode ser opcional se o placeholder for suficiente */}
                             <label htmlFor="email">E-mail</label>
                             <input
                                 type="email"
@@ -77,7 +74,6 @@ const LoginScreen: React.FC = () => {
                                 required
                                 disabled={isLoading}
                             />
-                             {/* Link agora usa classe para estilização */}
                             <Link to="/forgot-password" className="forgot-password-link">Esqueci a senha</Link>
                         </div>
 
@@ -91,11 +87,6 @@ const LoginScreen: React.FC = () => {
                             {isLoading ? 'Acessando...' : 'Acessar'}
                         </button>
 
-                         {/* Link de Registro atualizado */}
-                        <div className="register-link-container">
-                           <Link to="#" className="register-link">Registre-se</Link>
-                           {/* Ou <a href="#" className="register-link">Registre-se</a> se preferir */}
-                        </div>
                     </form>
                 </div>
             </div>

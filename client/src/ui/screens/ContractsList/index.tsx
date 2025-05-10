@@ -1,38 +1,44 @@
 import { useState, useEffect } from "react";
-
 import { Contract } from "../../../domain/models/contract";
-
 import api from "../../../Services/api";
-
 import ListHeader from "../../components/ListHeader";
 import ListRenderer from "../../components/ListRenderer";
 import ListItem from "../../components/ListItem";
 import Sidebar from "../../components/Sidebar";
 import DefaultContainer from "../../components/DefaultContainer";
 import FloatingLink from "../../components/FloatingLink";
-import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faFileContract } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../../context/AuthContext";
 
 const ContractsList = () => {
     const [contracts, setContracts] = useState<Contract[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const { user } = useAuth();
 
     useEffect(() => {
         loadAllContracts();
     }, []);
 
     const loadAllContracts = async () => {
-        const { data: contracts } = await api.get<Contract[]>("/contracts");
-        setContracts(contracts);
+        try { 
+            const { data } = await api.get<Contract[]>("/contracts");
+            setContracts(data || []); 
+        } catch (error) {
+            console.error("Erro ao carregar contratos:", error);
+            setContracts([]); 
+        }
     }
+
+    // Define os papéis que podem criar contratos
+    const canCreateContract = user?.role === "Administrator" || user?.role === "Manager";
 
     return (
         <>
             <Sidebar />
-
             <DefaultContainer>
                 <ListHeader
                     title="Contratos"
-                    icon={faUsers}
+                    icon={faFileContract} // Ícone corrigido
                     onSearch={setSearchQuery}
                 />
 
@@ -44,14 +50,18 @@ const ContractsList = () => {
                                 <ListItem
                                     key={contract.id}
                                     title={contract.title}
-                                    subtitle={`Cliente: ${contract.nameClient} - Entrega: ${contract.date}`}
+                                    subtitle={`Cliente: ${contract.nameClient} - Assinatura: ${contract.date}`} // Texto do subtítulo
                                     link={`/contracts/${contract.id}`}
                                 />
                         ))
                     }
+                    {contracts.length === 0 && <p>Nenhum contrato encontrado.</p>}
                 </ListRenderer>
 
-                <FloatingLink text="Criar" link="/create-contract" />
+                {/* Renderização condicional do botão/link de criar */}
+                {canCreateContract && (
+                    <FloatingLink text="Criar Contrato" link="/create-contract" />
+                )}
             </DefaultContainer>
         </>
     );

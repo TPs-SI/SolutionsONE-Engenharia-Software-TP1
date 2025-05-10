@@ -293,6 +293,20 @@ function userIdProjectValidation(): ValidationChain {
 
 }
 
+function confirmPasswordValidation(fieldName = "confirmPassword"): ValidationChain {
+  return body(fieldName)
+    .notEmpty()
+    .withMessage("Confirmação de senha é obrigatória!");
+    // A checagem se é igual a newPassword é feita no service/controller
+}
+
+// --- NOVA FUNÇÃO DE VALIDAÇÃO PARA 'oldPassword' (opcional, só checa se existe) ---
+function oldPasswordValidation(): ValidationChain {
+  return body("oldPassword")
+    .notEmpty()
+    .withMessage("Senha antiga é obrigatória!");
+}
+
 /* ============================ */
 /*      Rotas de Validação      */
 /* ============================ */
@@ -346,7 +360,18 @@ function getEngineerValidations(route: string) {
       nameProjectValidationUpdate(),
       projectFunctionValidationUpdate(),
       userIdProjectValidationUpdate(),
-    ]
+    ];
+    case "updateAccountPassword": 
+      return [
+        oldPasswordValidation(),       
+        resetPasswordValidation(),    
+        confirmPasswordValidation()  
+      ];
+      case "adminUpdatePassword":
+      return [
+        resetPasswordValidation(),   
+        confirmPasswordValidation()   
+      ];
     default:
     return [];
 
@@ -355,9 +380,8 @@ function getEngineerValidations(route: string) {
 
 // Middleware que executa as validações para a rota do engenheiro
 export function validateEngineerRoute(route: string) {
+
   const validations = getEngineerValidations(route);
-
-
   return async (req: Request, res: Response, next: NextFunction) => {
     if (!validations || validations.length === 0) {
       return next();
