@@ -150,20 +150,6 @@
     cursor: not-allowed;
 }
 
-.register-link-container {
-    margin-top: 30px;
-    font-size: 0.9rem;
-}
-
-.register-link {
-     color: var(--color-yellow); 
-     text-decoration: none;
-     font-weight: bold;
-}
-.register-link:hover {
-     text-decoration: underline;
-}
-
 .error-message {
     color: var(--color-error);
     font-size: 0.85rem;
