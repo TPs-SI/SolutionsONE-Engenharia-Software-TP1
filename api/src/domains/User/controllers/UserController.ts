@@ -128,7 +128,7 @@ userRouter.put(
 userRouter.get(
     "/",
     authMiddleware,
-    authorizeRoles([UserRole.ADMIN, UserRole.MANAGER]),
+    authorizeRoles([UserRole.ADMIN, UserRole.MANAGER, UserRole.MEMBER]),
     async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		// @ts-ignore 
@@ -136,7 +136,7 @@ userRouter.get(
 			return next(new LoginError("Usuário não autenticado."));
 		}
 		// @ts-ignore 
-		const usersList = await UserService.readAllUsers(req.user.userId);
+		const usersList = await UserService.readAllUsers(req.user.role);
 		if (usersList) {
 			res.status(statusCodes.SUCCESS).json(usersList);
 		} else {

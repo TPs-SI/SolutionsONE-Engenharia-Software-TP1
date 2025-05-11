@@ -90,8 +90,8 @@ class UserService {
   }
 
   // Retorna todos os usuários de acordo com o cargo do solicitante
-  async readAllUsers(requester: JwtPayload) {
-    if (requester.role === UserRole.ADMIN || requester.role === UserRole.MANAGER) {
+  async readAllUsers(role: string) {
+    if (role === UserRole.MEMBER || role === UserRole.ADMIN || role === UserRole.MANAGER) {
       const users = await prisma.user.findMany({
         orderBy: { name: "asc" },
         select: selectItems,
