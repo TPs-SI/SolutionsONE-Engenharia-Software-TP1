@@ -3,10 +3,18 @@ import ContractService from "../service/ContractService";
 import statusCodes from "../../../../utils/constants/statusCodes";
 import { validateEngineerRoute } from "../../../middlewares/engineerValidator";
 import authMiddleware from "../../../middlewares/auth";
-
+import { authorizeRoles } from "../../../middlewares/authorizeRoles";
+import { UserRole } from "../../User/types/UserRole";
+import { LoginError } from "../../../../errors/LoginError";
 
 const ContractRouter = Router();
-ContractRouter.post("/create",authMiddleware, validateEngineerRoute("createContract"),async(req: Request, res: Response, next: NextFunction)=>{
+
+ContractRouter.post(
+    "/create",
+    authMiddleware,
+    authorizeRoles([UserRole.ADMIN, UserRole.MANAGER]),
+    validateEngineerRoute("createContract"),
+    async(req: Request, res: Response, next: NextFunction)=>{
     try{
         const contract = await ContractService.createContract(req.body);
         res.status(statusCodes.SUCCESS).json(contract);
@@ -17,7 +25,10 @@ ContractRouter.post("/create",authMiddleware, validateEngineerRoute("createContr
     }
 })
 
-ContractRouter.get("/read/:id", authMiddleware,async (req: Request, res: Response, next: NextFunction) =>{
+ContractRouter.get(
+    "/read/:id",
+    authMiddleware,
+    async (req: Request, res: Response, next: NextFunction) =>{
     try {
         const readContract = await ContractService.readContract(Number(req.params.id));
         res.status(statusCodes.SUCCESS).json(readContract);
@@ -29,7 +40,12 @@ ContractRouter.get("/read/:id", authMiddleware,async (req: Request, res: Respons
 
 });
 
-ContractRouter.put("/update/:id",authMiddleware, validateEngineerRoute("updateContract"),async (req: Request, res: Response, next: NextFunction) =>{
+ContractRouter.put(
+    "/update/:id", 
+    authMiddleware,
+    authorizeRoles([UserRole.ADMIN, UserRole.MANAGER]),
+    validateEngineerRoute("updateContract"),
+    async (req: Request, res: Response, next: NextFunction) =>{
     try {
         const updateContract = await ContractService.updateContract(Number(req.params.id),req.body)
         res.status(statusCodes.SUCCESS).json(updateContract);
@@ -41,7 +57,11 @@ ContractRouter.put("/update/:id",authMiddleware, validateEngineerRoute("updateCo
 
 });
 
-ContractRouter.delete("/remove/:id",authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+ContractRouter.delete(
+    "/remove/:id",
+    authMiddleware,
+    authorizeRoles([UserRole.ADMIN, UserRole.MANAGER]),
+    async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const contract = await ContractService.deleteContract(Number(req.params.id));
@@ -53,7 +73,10 @@ ContractRouter.delete("/remove/:id",authMiddleware, async (req: Request, res: Re
     }
 });
 
-ContractRouter.get("/", authMiddleware,async (req: Request, res: Response, next: NextFunction) => {
+ContractRouter.get(
+    "/",
+    authMiddleware,
+    async (req: Request, res: Response, next: NextFunction) => {
     try {
         const listContracts = await ContractService.listContracts();
         res.status(statusCodes.SUCCESS).json(listContracts);
