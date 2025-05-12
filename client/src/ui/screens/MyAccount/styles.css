@@ -1,0 +1,120 @@
+:root {
+  --color-yellow: #facc15;
+  /* Adicione outras variáveis de cor se usadas aqui e não globais */
+  --color-primary-button-text: #111827; /* Texto para botões primários (amarelos) */
+  --color-danger-button-bg: #dc3545;    /* Vermelho para botão de perigo/sair */
+  --color-danger-button-bg-hover: #c82333; /* Hover do botão de perigo */
+  --color-button-text-light: #ffffff;    /* Texto branco para botões escuros */
+}
+
+.account-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+color: #e6f1ff;
+margin-top: 40px;
+padding-bottom: 40px; /* Espaço no final */
+}
+
+.account-photo {
+width: 160px;
+height: 160px;
+border-radius: 50%;
+object-fit: cover;
+background-color: #cbd5e1;
+margin-bottom: 20px;
+border: 3px solid #233554; /* Borda sutil na foto */
+}
+
+.account-name {
+font-size: 1.8em; /* Aumentar um pouco */
+font-weight: bold;
+margin-bottom: 30px;
+color: #ccd6f6; /* Cor mais clara para nome */
+}
+
+.account-info {
+text-align: left;
+width: 100%;
+max-width: 420px; /* Aumentar um pouco a largura */
+border-top: 1px solid #233554;
+padding-top: 20px; /* Mais espaço acima */
+margin-bottom: 30px; /* Espaço antes dos botões */
+color: #a8b2d1;
+}
+
+.account-info h3 {
+color: #ccd6f6;
+font-size: 1.2em; /* Aumentar um pouco */
+margin-bottom: 15px;
+}
+
+.account-info hr { /* Estilizando o hr */
+  border: none;
+  height: 1px;
+  background-color: #233554; /* Mesma cor da borda superior */
+  margin: 15px 0; /* Espaço antes e depois */
+}
+
+.account-info p {
+margin: 10px 0; /* Mais espaço entre os parágrafos */
+font-size: 0.95rem; /* Leve ajuste no tamanho */
+}
+
+.account-info p strong {
+display: inline-block;
+min-width: 140px; /* Aumentar para alinhar melhor os valores */
+color: #ccd6f6;
+font-weight: 600; /* Levemente mais forte */
+}
+
+/* Novo container para os botões */
+.account-actions-container {
+display: flex;
+flex-direction: column; /* Botões um abaixo do outro */
+align-items: center;   /* Centraliza os botões se tiverem larguras diferentes */
+gap: 15px;             /* Espaço entre os botões */
+width: 100%;
+max-width: 280px;      /* Definir uma largura para os botões */
+}
+
+.button {
+padding: 12px 20px; /* Ajuste de padding */
+font-weight: 600;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.2s ease, transform 0.1s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%; /* Faz os botões ocuparem a largura do seu container */
+box-sizing: border-box;
+font-size: 0.95rem; /* Ajuste de tamanho */
+}
+
+.button svg {
+margin-right: 10px; /* Mais espaço para o ícone */
+}
+
+.button.button-primary {
+background-color: var(--color-yellow);
+color: var(--color-primary-button-text);
+}
+
+.button.button-primary:hover {
+background-color: #eab308; /* Amarelo mais escuro */
+}
+
+.button.button-danger {
+background-color: var(--color-danger-button-bg);
+color: var(--color-button-text-light);
+}
+
+.button.button-danger:hover {
+background-color: var(--color-danger-button-bg-hover);
+}
+
+.button:active {
+  transform: translateY(1px);
+}

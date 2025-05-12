@@ -1,0 +1,19 @@
+/* 
+  IMPORTANTE: Crie este arquivo e COPIE/ADAPTE os estilos de 
+  Login/styles.css ou ForgotPassword/styles.css para manter a consistência visual. 
+  Use classes comuns (auth-page-container, auth-form-card, auth-logo, etc.).
+  Adicione a classe .success-message se ainda não existir.
+*/
+
+.success-message { 
+  color: #28a745; 
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.success-container .auth-link-container {
+  margin-top: 0; 
+}

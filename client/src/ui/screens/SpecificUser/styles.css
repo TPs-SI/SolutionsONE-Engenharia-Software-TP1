@@ -1,0 +1,121 @@
+/* Header com título e botões */
+.update-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 60px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #233554;
+}
+
+.update-header h1 {
+  color: #ccd6f6;
+  margin: 0;
+  font-size: 1.8em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Botão de edição */
+.edit-button {
+  background-color: #f0ad4e;
+  color: #2a2a2a;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.edit-button:hover {
+  background-color: #ec971f;
+}
+
+/* Botão de exclusão */
+.delete-button {
+  background-color: #f04e4e;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  margin-left: 12px;
+}
+
+.delete-button:hover {
+  background-color: #ec1f1f;
+}
+
+/* Seções de conteúdo */
+section {
+  margin-bottom: 25px;
+}
+
+section h2, section h3 {
+  color: #64ffda;
+  margin-bottom: 15px;
+  font-weight: 700;
+  border-bottom: 1px solid #233554;
+  padding-bottom: 8px;
+}
+
+section h2 {
+  font-size: 1.6em;
+}
+
+section h3 {
+  font-size: 1.4em;
+}
+
+p {
+  margin: 8px 0;
+  color: #a8b2d1;
+}
+
+p strong {
+  color: #ccd6f6;
+  min-width: 150px;
+  display: inline-block;
+}
+
+/* Linha divisória */
+.divider {
+  border: none;
+  border-top: 1px solid #233554;
+  margin: 30px 0;
+}
+
+/* Estilo para imagem do usuário */
+.user-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #64ffda;
+  margin-bottom: 20px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .update-header {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .update-header h1 {
+      margin-bottom: 10px;
+  }
+
+  .delete-button {
+      margin-left: 0;
+      margin-top: 10px;
+  }
+}

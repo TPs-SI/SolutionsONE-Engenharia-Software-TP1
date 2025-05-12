@@ -1,0 +1,246 @@
+/* Estilos adicionados para o header específico */
+.create-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: 60px; /* Mantido do seu bloco */
+}
+
+.create-header h1 {
+    font-size: 1.8em;
+    color: #e6f1ff; /* Cor do título um pouco mais clara (Mantido do seu bloco) */
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.create-header h1 i {
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: #a8b2d1; /* Cor do ícone (Mantido do seu bloco) */
+}
+/* Fim dos estilos adicionados */
+
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1d3158; /* --border-color */
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.section-title {
+    color: #64ffda; /* --accent-blue */
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Estilo para labels */
+.form-group label { /* Aplicado ao label dentro de .form-group */
+    display: block;
+    margin-bottom: 8px;
+    color: #8892b0; /* --text-secondary */
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* Estilo para inputs e select dentro de .form-group */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    background-color: #0a192f; /* --bg-primary */
+    border: 1px solid #1d3158; /* --border-color */
+    border-radius: 6px;
+    color: #ccd6f6; /* --input-text-color */
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #64ffda; /* --accent-blue */
+    box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.3);
+}
+
+/* Placeholder styling dentro de .form-group */
+.form-group input::placeholder {
+    color: #8892b0; /* --text-secondary */
+    opacity: 0.7;
+}
+
+/* Specific styling for date input icon dentro de .form-group */
+.form-group input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+    cursor: pointer;
+}
+
+/* Select arrow styling dentro de .form-group */
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)' fill='%238892b0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    padding-right: 35px;
+}
+
+/* Team Member Styling */
+#team-members-container {
+    margin-bottom: 20px;
+}
+
+.team-member {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.team-member section {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    height: 36px;
+}
+
+.team-member section p {
+    width: 360px;
+}
+
+.team-member button {
+    border: none;
+    border-radius: 2px;
+    width: 24px;
+    height: 24px;
+    color: #fff;
+    background-color: red;
+    cursor: pointer;
+}
+
+.add-team-member {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #1d3158; /* --border-color */
+    border-radius: 6px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    background-color: rgba(17, 34, 64, 0.5);
+}
+
+.add-team-member .form-group {
+    margin-bottom: 0;
+    flex-grow: 1;
+}
+
+.add-team-member label { /* Aplicado ao label dentro de .team-member */
+    font-size: 0.8em;
+    margin-bottom: 4px;
+    /* Herda a cor de .form-group label (#8892b0) */
+}
+
+/* Button Styling */
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-decoration: none;
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+.button i {
+    font-size: 0.9em;
+}
+
+.button-primary {
+    background-color: #facc15; /* --accent-yellow */
+    color: #111827; /* --button-dark-text */
+}
+
+.button-primary:hover {
+    background-color: #eab308; /* --accent-yellow-hover */
+}
+
+.button-secondary {
+    background-color: #64ffda; /* --accent-blue */
+    color: #111827; /* --button-dark-text */
+}
+
+.button-secondary:hover {
+    background-color: #52c4b8; /* --accent-blue-hover */
+}
+
+.button-remove {
+    background-color: #e11d48; /* --accent-red */
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    flex-shrink: 0;
+}
+
+.button-remove:hover {
+    background-color: #be123c; /* --accent-red-hover */
+}
+
+/* Form Actions (Submit Button Alignment) */
+.form-actions {
+    margin-top: 30px;
+    text-align: right;
+}
+
+/* Estilos para o campo de upload de arquivo */
+.form-group .file-upload-input {
+    display: none; /* Oculta o input de arquivo padrão */
+}
+
+.form-group .file-upload-label {
+    display: inline-block; /* Ou 'block' dependendo do layout desejado */
+    background-color: #007bff; /* Cor de fundo (azul do seu botão, por exemplo) */
+    color: white; /* Cor do texto */
+    padding: 10px 15px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+    font-weight: bold; /* Texto em negrito */
+    text-align: center; /* Centraliza o texto/ícone */
+    user-select: none; /* Impede a seleção de texto no label */
+    margin-top: 5px; /* Espaçamento acima do label */
+}
+
+.form-group .file-upload-label:hover {
+    background-color: #0056b3; /* Cor mais escura ao passar o mouse */
+}
+
+/* Opcional: Estilo para o nome do arquivo selecionado */
+.form-group .file-name {
+    margin-left: 10px; /* Espaçamento à esquerda do nome do arquivo */
+    font-style: italic; /* Texto em itálico */
+    color: #555; /* Cor do texto */
+}
