@@ -43,20 +43,13 @@ const CreateProject = () => {
     }
 
     const loadContracts = async () => {
-        // TODO: Fetch contracts from the API
-        // For now, we will use a static list
-        const contracts: Contract[] = [
-            {
-                id: 1,
-                title: "Contrato Alpha",
-                nameClient: "Cliente A",
-                value: 10000,
-                date: "2023-01-01",
-                archivePath: "/contratos/contrato_alpha.pdf"
-            }
-        ]
-
-        setContracts(contracts);
+        try { 
+            const { data } = await api.get<Contract[]>("/contracts");
+            setContracts(data || []); 
+        } catch (error) {
+            console.error("Erro ao carregar contratos:", error);
+            setContracts([]); 
+        }
     }
 
     const addMember = () => {
