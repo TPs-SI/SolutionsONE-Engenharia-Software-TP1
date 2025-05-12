@@ -214,3 +214,33 @@
     margin-top: 30px;
     text-align: right;
 }
+
+/* Estilos para o campo de upload de arquivo */
+.form-group .file-upload-input {
+    display: none; /* Oculta o input de arquivo padrão */
+}
+
+.form-group .file-upload-label {
+    display: inline-block; /* Ou 'block' dependendo do layout desejado */
+    background-color: #007bff; /* Cor de fundo (azul do seu botão, por exemplo) */
+    color: white; /* Cor do texto */
+    padding: 10px 15px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+    font-weight: bold; /* Texto em negrito */
+    text-align: center; /* Centraliza o texto/ícone */
+    user-select: none; /* Impede a seleção de texto no label */
+    margin-top: 5px; /* Espaçamento acima do label */
+}
+
+.form-group .file-upload-label:hover {
+    background-color: #0056b3; /* Cor mais escura ao passar o mouse */
+}
+
+/* Opcional: Estilo para o nome do arquivo selecionado */
+.form-group .file-name {
+    margin-left: 10px; /* Espaçamento à esquerda do nome do arquivo */
+    font-style: italic; /* Texto em itálico */
+    color: #555; /* Cor do texto */
+}
