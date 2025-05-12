@@ -120,13 +120,15 @@ const UpdateMyAccount = () => {
               <div className="form-group">
                 <label htmlFor="birth">Data de Nascimento</label>
                 <input
-                  type="date"
+                  type="text"
                   id="birth"
                   name="birth"
                   value={user.birth}
                   onChange={handleChange}
+                  pattern="\d{2}-\d{2}-\d{4}" placeholder="Ex: 23/07/2016"
                   required
                 />
+                {/* <input type="text" id="date" name="date" pattern="\d{2}-\d{2}-\d{4}" placeholder="Ex: 23/07/2016" required onChange={e => setDate(e.target.value)} /> */}
               </div>
 
               <div className="form-group">
