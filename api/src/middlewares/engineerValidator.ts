@@ -330,12 +330,12 @@ function getEngineerValidations(route: string) {
       birthValidation(),
     ];
     case 'createContract':
-    return [
-      titleValidation(),
-      nameClientValidation(),
-      valueValidate(),
-      dateValidation(),
-    ];
+      return [
+        titleValidation(),
+        nameClientValidation(),
+        valueValidate(),
+        dateValidation(),
+      ];
     
     case 'updateContract':
     return [

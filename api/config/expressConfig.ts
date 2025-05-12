@@ -28,6 +28,9 @@ app.use("/api/users", userRouter);
 app.use("/api/projects", projectRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/contracts", contractRouter);
+
+app.use("/api/uploads", express.static("uploads"));
+
 app.use(errorHandler);
 
 export default app;
