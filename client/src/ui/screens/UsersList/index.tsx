@@ -7,7 +7,7 @@ import ListItem from "../../components/ListItem";
 import Sidebar from "../../components/Sidebar";
 import DefaultContainer from "../../components/DefaultContainer";
 import FloatingLink from "../../components/FloatingLink";
-import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../../context/AuthContext"; 
 
 const UsersList = () => {
@@ -37,7 +37,7 @@ const UsersList = () => {
             <DefaultContainer>
                 <ListHeader
                     title="Usuários"
-                    icon={faUserGroup}
+                    icon={faUsers}
                     onSearch={setSearchQuery}
                 />
                 <ListRenderer>

@@ -6,17 +6,19 @@ import authMiddleware from "../../../middlewares/auth";
 import { authorizeRoles } from "../../../middlewares/authorizeRoles";
 import { UserRole } from "../../User/types/UserRole";
 import { LoginError } from "../../../../errors/LoginError";
+import { upload } from "../../../middlewares/multerContract";
 
 const ContractRouter = Router();
 
 ContractRouter.post(
     "/create",
-    authMiddleware,
-    authorizeRoles([UserRole.ADMIN, UserRole.MANAGER]),
+    // authMiddleware,
+    // authorizeRoles([UserRole.ADMIN, UserRole.MANAGER]),
     validateEngineerRoute("createContract"),
+    upload.single("file"),
     async(req: Request, res: Response, next: NextFunction)=>{
     try{
-        const contract = await ContractService.createContract(req.body);
+        const contract = await ContractService.createContract({...req.body, value: Number(req.body.value), archivePath: req.file?.path});
         res.status(statusCodes.SUCCESS).json(contract);
     } catch(error){
         const typedError = error as Error;

@@ -25,27 +25,12 @@ const CreateContract = () => {
     const [clientName, setClientName] = useState<string>("");
     const [contractValue, setContractValue] = useState<number>(0);
     const [date, setDate] = useState<string>("");
-    // const [contractId, setContractId] = useState<number>(0); // Removido - ID será gerado na criação
-    // const [teamMembers, setTeamMembers] = useState<ProjectAssignment[]>([]); // Removido
-    // const [currentFunction, setCurrentFunction] = useState<string>(""); // Removido
-    // const [userId, setUserId] = useState<number>(0); // Removido
+    const [file, setFile] = useState<File | null>(null);
 
-    // Dynamic data from server - Removido pois não precisamos carregar usuários ou contratos existentes
-    // const [users, setUsers] = useState<User[]>([]);
-    // const [contracts, setContracts] = useState<Contract[]>([]);
-
-    // useEffect(() => {
-        // loadUsers(); // Removido
-        // loadContracts(); // Removido
-    // }, []); // useEffect não é mais necessário se não houver carregamento inicial
-
-    // Funções relacionadas a usuários e times removidas
-    // const loadUsers = async () => { ... }
-    // const loadContracts = async () => { ... }
-    // const addMember = () => { ... }
-    // const removeMember = (userId: number) => { ... }
-    // const getUserName = (userId: number) => { ... }
-
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = event.target.files ? event.target.files[0] : null;
+        setFile(selectedFile);
+    };
 
     const handleFormSubmit = async () => {
         console.log(`Title: ${title}, Client: ${clientName}, Value: ${contractValue}, Date: ${date}`);
@@ -71,21 +56,19 @@ const CreateContract = () => {
             return;
         }
 
-        // Removida validação de contractId e teamMembers
-
-        // Payload para a API de criação de contrato
-        const request = {
-            title,
-            nameClient: clientName, // Ajustar nome do campo se necessário pela API
-            value: contractValue,
-            date,
-            // archivePath: "?", // O path do arquivo geralmente é definido após upload, talvez não na criação inicial
-        };
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("nameClient", clientName);
+        formData.append("value", String(contractValue));
+        formData.append("date", date);
+        if (file) {
+            formData.append("file", file);
+       }
 
         try {
             // Chamar endpoint de criação de Contrato
             // Ajuste o endpoint ('/contracts') conforme necessário
-            const response = await api.post<Contract>("/contracts/create", request);
+            const response = await api.post<Contract>("/contracts/create", formData);
             const contractId = response.data.id; // Assumindo que a resposta contém o contrato criado com ID
 
             console.log("Contract created successfully:", response.data);
@@ -94,7 +77,6 @@ const CreateContract = () => {
             // Navegar para a página de detalhes do contrato criado
             // Ajuste o path ('/contracts/') conforme necessário
             navigate(`/contracts/${contractId}`);
-
         } catch (error) {
             console.error("Error creating contract:", error);
             // Fornecer feedback mais específico se possível (ex: erro de validação da API)
@@ -176,6 +158,22 @@ const CreateContract = () => {
                             {/* Placeholder não funciona com type="date" na maioria dos browsers modernos */}
                             {/* O formato esperado pela API pode precisar de ajuste */}
                         </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="contractFile" className="file-upload-label">
+                            Arquivo do Contrato
+                        </label>
+                        <input
+                            type="file"
+                            id="contractFile"
+                            name="contractFile"
+                            className="file-upload-input" // Classe para ocultar o input padrão
+                            onChange={handleFileChange} // Lidar com a seleção do arquivo
+                            accept=".pdf,.doc,.docx,.jpg,.png" // Opcional: definir tipos de arquivo permitidos
+                        />
+                        {/* Opcional: Exibir o nome do arquivo selecionado */}
+                        {file && <span className="file-name">{file.name}</span>}
                     </div>
 
                     {/* Seção de adicionar membros REMOVIDA */}

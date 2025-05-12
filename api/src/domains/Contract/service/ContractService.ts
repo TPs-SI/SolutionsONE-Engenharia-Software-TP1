@@ -2,7 +2,6 @@ import { Contract } from "@prisma/client";
 import prisma from "../../../../config/prismaClient";
 import { QueryError } from"../../../../errors/QueryError";
 import { convertDocxToPdf, docxSubs, transformarData } from "../../../../utils/functions/docxFunctions";
-import { DeletarContratoDaAWS } from "../../../middlewares/multerContract";
 import { PermissionError } from "../../../../errors/PermissionError";
 
 
@@ -10,9 +9,8 @@ import { PermissionError } from "../../../../errors/PermissionError";
 class ContractService {
 
     async createContract(body: Contract){
-
-        if (body.archivePath != null && body.archivePath != ".../.../.../.../utils/contract"){
-            throw new PermissionError("O archivePath não pode ser diferente de '.../.../.../.../utils/contract' ou de nulo!");
+        if (body.archivePath == null){
+            throw new PermissionError("O archivePath não pode ser nulo!");
         }
         const contract = await prisma.contract.create({
             data: {
@@ -20,29 +18,9 @@ class ContractService {
                 nameClient: body.nameClient,
                 value: body.value,
                 date: body.date,
-
-                archivePath: ".../.../.../.../utils/contract"
+                archivePath: body.archivePath,
             }
         })
-
-
-        // const newData = transformarData(body.date);
-        // const dia = newData.dia;
-        // const mes = newData.mes;
-        // const ano = newData.ano;
-
-        // const newDoc = await docxSubs(contract, dia, mes, ano);
-        // const newPdf = await convertDocxToPdf(newDoc,contract.id);
-
-        // const newcontract = await prisma.contract.update({
-        //     where:{
-        //         id:contract.id,
-        //     },
-        //     data:{
-        //         key: newPdf,
-        //     } 
-        // });
-        
         
         return contract;
     }

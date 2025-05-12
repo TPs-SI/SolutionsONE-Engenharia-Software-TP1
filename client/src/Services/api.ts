@@ -2,8 +2,10 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { 
     LoginCredentials, LoginResponse, UserData,  ForgotPasswordDTO, ResetPasswordDTO, SuccessMessageResponse } from "../domain/models/auth";
 
+export const BASE_URL = "http://localhost:3030/api/"
+
 const api = axios.create({
-    baseURL: "http://localhost:3030/api",
+    baseURL: BASE_URL,
     // withCredentials: true, 
 });
 
